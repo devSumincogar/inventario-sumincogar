@@ -1,0 +1,11 @@
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.exe
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\appsettings.json
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.dll
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.deps.json
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.runtimeconfig.json
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.pdb
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Microsoft.OpenApi.dll
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Alexis\Desktop\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

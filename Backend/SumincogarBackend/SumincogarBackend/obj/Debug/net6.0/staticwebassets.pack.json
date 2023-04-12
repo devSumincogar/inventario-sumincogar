@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\0b56578b-d50a-45ff-bf5d-4feccab885ac.png",
+      "PackagePath": "staticwebassets\\producto\\0b56578b-d50a-45ff-bf5d-4feccab885ac.png"
+    },
+    {
+      "Id": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\553f0e19-f1f5-4e32-ab53-13b74402a371.pdf",
+      "PackagePath": "staticwebassets\\producto\\553f0e19-f1f5-4e32-ab53-13b74402a371.pdf"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.SumincogarBackend.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.SumincogarBackend.props",
+      "PackagePath": "build\\SumincogarBackend.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.SumincogarBackend.props",
+      "PackagePath": "buildMultiTargeting\\SumincogarBackend.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.SumincogarBackend.props",
+      "PackagePath": "buildTransitive\\SumincogarBackend.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
