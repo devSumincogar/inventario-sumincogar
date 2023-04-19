@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SumincogarBackend.Models;
 
 namespace SumincogarBackend.Contexts
 {
-    public partial class db_a977c3_sumincogarContext : IdentityDbContext
+    public partial class db_a977c3_sumincogarContext : DbContext
     {
         public db_a977c3_sumincogarContext()
         {
@@ -18,105 +17,128 @@ namespace SumincogarBackend.Contexts
         {
         }
 
-        public virtual DbSet<Catalogo> Catalogos { get; set; } = null!;
-        public virtual DbSet<Categorium> Categoria { get; set; } = null!;
-        public virtual DbSet<Detalleinventario> Detalleinventarios { get; set; } = null!;
-        public virtual DbSet<Imagenreferencial> Imagenreferencials { get; set; } = null!;
-        public virtual DbSet<Parametrotecnico> Parametrotecnicos { get; set; } = null!;
-        public virtual DbSet<Producto> Productos { get; set; } = null!;
-        public virtual DbSet<Promocion> Promocions { get; set; } = null!;
-        public virtual DbSet<Promocionimagen> Promocionimagens { get; set; } = null!;
+        public virtual DbSet<Catalogo> Catalogo { get; set; } = null!;
+        public virtual DbSet<Categoria> Categoria { get; set; } = null!;
+        public virtual DbSet<Detalleinventario> Detalleinventario { get; set; } = null!;
+        public virtual DbSet<Fichatecnica> Fichatecnica { get; set; } = null!;
+        public virtual DbSet<Imagenreferencial> Imagenreferencial { get; set; } = null!;
+        public virtual DbSet<Parametrotecnico> Parametrotecnico { get; set; } = null!;
+        public virtual DbSet<Producto> Producto { get; set; } = null!;
+        public virtual DbSet<Promocion> Promocion { get; set; } = null!;
+        public virtual DbSet<Promocionimagen> Promocionimagen { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=sql8001.site4now.net;Database=db_a977c3_sumincogar;User ID=db_a977c3_sumincogar_admin;Password=Sumincogar2023**;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {            
-            base.OnModelCreating(modelBuilder);
-
+        {
             modelBuilder.Entity<Catalogo>(entity =>
             {
                 entity.ToTable("CATALOGO");
 
-                entity.Property(e => e.Catalogoid).HasColumnName("CATALOGOID");
+                entity.Property(e => e.CatalogoId).HasColumnName("CATALOGO_ID");
 
-                entity.Property(e => e.Catalogourl)
+                entity.Property(e => e.ImagenUrl)
                     .IsUnicode(false)
-                    .HasColumnName("CATALOGOURL");
-
-                entity.Property(e => e.Imagenreferencial)
-                    .IsUnicode(false)
-                    .HasColumnName("IMAGENREFERENCIAL");
+                    .HasColumnName("IMAGEN_URL");
 
                 entity.Property(e => e.Nombre)
-                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE");
+
+                entity.Property(e => e.Url)
+                    .IsUnicode(false)
+                    .HasColumnName("URL");
             });
 
-            modelBuilder.Entity<Categorium>(entity =>
+            modelBuilder.Entity<Categoria>(entity =>
             {
-                entity.HasKey(e => e.Categoriaid);
-
                 entity.ToTable("CATEGORIA");
 
-                entity.Property(e => e.Categoriaid).HasColumnName("CATEGORIAID");
+                entity.Property(e => e.CategoriaId).HasColumnName("CATEGORIA_ID");
 
-                entity.Property(e => e.Categorianombre)
+                entity.Property(e => e.CategoriaNombre)
                     .HasMaxLength(255)
                     .IsUnicode(false)
-                    .HasColumnName("CATEGORIANOMBRE");
+                    .HasColumnName("CATEGORIA_NOMBRE");
             });
 
             modelBuilder.Entity<Detalleinventario>(entity =>
             {
                 entity.ToTable("DETALLEINVENTARIO");
 
-                entity.Property(e => e.Detalleinventarioid).HasColumnName("DETALLEINVENTARIOID");
+                entity.Property(e => e.DetalleInventarioId).HasColumnName("DETALLE_INVENTARIO_ID");
 
-                entity.Property(e => e.Codcliente)
-                    .HasMaxLength(255)
+                entity.Property(e => e.CodCliente)
                     .IsUnicode(false)
-                    .HasColumnName("CODCLIENTE");
+                    .HasColumnName("COD_CLIENTE");
 
-                entity.Property(e => e.Codproducto)
-                    .HasMaxLength(255)
+                entity.Property(e => e.CodProducto)
                     .IsUnicode(false)
-                    .HasColumnName("CODPRODUCTO");
+                    .HasColumnName("COD_PRODUCTO");
 
                 entity.Property(e => e.Colores)
                     .IsUnicode(false)
                     .HasColumnName("COLORES");
 
                 entity.Property(e => e.Impresion)
-                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("IMPRESION");
 
                 entity.Property(e => e.Stock)
-                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("STOCK");
             });
 
+            modelBuilder.Entity<Fichatecnica>(entity =>
+            {
+                entity.ToTable("FICHATECNICA");
+
+                entity.HasIndex(e => e.CategoriaId, "RELATIONSHIP_3_FK");
+
+                entity.Property(e => e.FichaTecnicaId).HasColumnName("FICHA_TECNICA_ID");
+
+                entity.Property(e => e.CategoriaId).HasColumnName("CATEGORIA_ID");
+
+                entity.Property(e => e.DocumentoUrl)
+                    .IsUnicode(false)
+                    .HasColumnName("DOCUMENTO_URL");
+
+                entity.Property(e => e.NombreFichaTecnica)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE_FICHA_TECNICA");
+
+                entity.HasOne(d => d.Categoria)
+                    .WithMany(p => p.Fichatecnica)
+                    .HasForeignKey(d => d.CategoriaId)
+                    .HasConstraintName("FK_FICHATEC_RELATIONS_CATEGORI");
+            });
+
             modelBuilder.Entity<Imagenreferencial>(entity =>
             {
+                entity.HasKey(e => e.ImagenReferenciaId);
+
                 entity.ToTable("IMAGENREFERENCIAL");
 
-                entity.HasIndex(e => e.Productoid, "RELATIONSHIP_2_FK");
+                entity.HasIndex(e => e.ProductoId, "RELATIONSHIP_2_FK");
 
-                entity.Property(e => e.Imagenreferencialid).HasColumnName("IMAGENREFERENCIALID");
+                entity.Property(e => e.ImagenReferenciaId).HasColumnName("IMAGEN_REFERENCIA_ID");
 
-                entity.Property(e => e.Imagenreferencialurl)
+                entity.Property(e => e.ProductoId).HasColumnName("PRODUCTO_ID");
+
+                entity.Property(e => e.Url)
                     .IsUnicode(false)
-                    .HasColumnName("IMAGENREFERENCIALURL");
-
-                entity.Property(e => e.Productoid).HasColumnName("PRODUCTOID");
+                    .HasColumnName("URL");
 
                 entity.HasOne(d => d.Producto)
-                    .WithMany(p => p.Imagenreferencials)
-                    .HasForeignKey(d => d.Productoid)
+                    .WithMany(p => p.Imagenreferencial)
+                    .HasForeignKey(d => d.ProductoId)
                     .HasConstraintName("FK_IMAGENRE_RELATIONS_PRODUCTO");
             });
 
@@ -124,84 +146,75 @@ namespace SumincogarBackend.Contexts
             {
                 entity.ToTable("PARAMETROTECNICO");
 
-                entity.HasIndex(e => e.Productoid, "RELATIONSHIP_3_FK");
+                entity.HasIndex(e => e.FichaTecnicaId, "RELATIONSHIP_5_FK");
 
-                entity.Property(e => e.Parametrotecnicoid).HasColumnName("PARAMETROTECNICOID");
+                entity.Property(e => e.ParametroTecnicoId).HasColumnName("PARAMETRO_TECNICO_ID");
 
                 entity.Property(e => e.Clave)
-                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("CLAVE");
 
-                entity.Property(e => e.Productoid).HasColumnName("PRODUCTOID");
+                entity.Property(e => e.FichaTecnicaId).HasColumnName("FICHA_TECNICA_ID");
 
                 entity.Property(e => e.Valor)
-                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("VALOR");
 
-                entity.HasOne(d => d.Producto)
-                    .WithMany(p => p.Parametrotecnicos)
-                    .HasForeignKey(d => d.Productoid)
-                    .HasConstraintName("FK_PARAMETR_RELATIONS_PRODUCTO");
+                entity.HasOne(d => d.FichaTecnica)
+                    .WithMany(p => p.Parametrotecnico)
+                    .HasForeignKey(d => d.FichaTecnicaId)
+                    .HasConstraintName("FK_PARAMETR_RELATIONS_FICHATEC");
             });
 
             modelBuilder.Entity<Producto>(entity =>
             {
                 entity.ToTable("PRODUCTO");
 
-                entity.HasIndex(e => e.Categoriaid, "RELATIONSHIP_1_FK");
+                entity.HasIndex(e => e.FichaTecnicaId, "RELATIONSHIP_7_FK");
 
-                entity.Property(e => e.Productoid).HasColumnName("PRODUCTOID");
-
-                entity.Property(e => e.Categoriaid).HasColumnName("CATEGORIAID");
+                entity.Property(e => e.ProductoId).HasColumnName("PRODUCTO_ID");
 
                 entity.Property(e => e.Codigo)
-                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("CODIGO");
 
-                entity.Property(e => e.Fichatenicapdf)
-                    .IsUnicode(false)
-                    .HasColumnName("FICHATENICAPDF");
+                entity.Property(e => e.FichaTecnicaId).HasColumnName("FICHA_TECNICA_ID");
 
-                entity.Property(e => e.Imagenreferencial)
+                entity.Property(e => e.ImagenUrl)
                     .IsUnicode(false)
-                    .HasColumnName("IMAGENREFERENCIAL");
+                    .HasColumnName("IMAGEN_URL");
 
-                entity.Property(e => e.Productonombre)
-                    .HasMaxLength(255)
+                entity.Property(e => e.ProductoNombre)
                     .IsUnicode(false)
-                    .HasColumnName("PRODUCTONOMBRE");
+                    .HasColumnName("PRODUCTO_NOMBRE");
 
-                entity.HasOne(d => d.Categoria)
-                    .WithMany(p => p.Productos)
-                    .HasForeignKey(d => d.Categoriaid)
-                    .HasConstraintName("FK_PRODUCTO_RELATIONS_CATEGORI");
+                entity.HasOne(d => d.FichaTecnica)
+                    .WithMany(p => p.Producto)
+                    .HasForeignKey(d => d.FichaTecnicaId)
+                    .HasConstraintName("FK_PRODUCTO_RELATIONS_FICHATEC");
             });
 
             modelBuilder.Entity<Promocion>(entity =>
             {
                 entity.ToTable("PROMOCION");
 
-                entity.Property(e => e.Promocionid).HasColumnName("PROMOCIONID");
+                entity.Property(e => e.PromocionId).HasColumnName("PROMOCION_ID");
 
-                entity.Property(e => e.Fechacaducidad)
+                entity.Property(e => e.FechaCaducidad)
                     .HasColumnType("datetime")
-                    .HasColumnName("FECHACADUCIDAD");
+                    .HasColumnName("FECHA_CADUCIDAD");
 
-                entity.Property(e => e.Fechaingreso)
+                entity.Property(e => e.FechaIngreso)
                     .HasColumnType("datetime")
-                    .HasColumnName("FECHAINGRESO");
+                    .HasColumnName("FECHA_INGRESO");
 
-                entity.Property(e => e.Imagenprincipal)
+                entity.Property(e => e.ImagenPrincipal)
                     .IsUnicode(false)
-                    .HasColumnName("IMAGENPRINCIPAL");
+                    .HasColumnName("IMAGEN_PRINCIPAL");
 
                 entity.Property(e => e.Prioridad).HasColumnName("PRIORIDAD");
 
                 entity.Property(e => e.Titulo)
-                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("TITULO");
             });
@@ -210,21 +223,21 @@ namespace SumincogarBackend.Contexts
             {
                 entity.ToTable("PROMOCIONIMAGEN");
 
-                entity.HasIndex(e => e.Promocionid, "RELATIONSHIP_4_FK");
+                entity.HasIndex(e => e.PromocionId, "RELATIONSHIP_4_FK");
 
-                entity.Property(e => e.Promocionimagenid).HasColumnName("PROMOCIONIMAGENID");
+                entity.Property(e => e.PromocionImagenId).HasColumnName("PROMOCION_IMAGEN_ID");
 
                 entity.Property(e => e.Orden).HasColumnName("ORDEN");
 
-                entity.Property(e => e.Promocionid).HasColumnName("PROMOCIONID");
+                entity.Property(e => e.PromocionId).HasColumnName("PROMOCION_ID");
 
-                entity.Property(e => e.Promocionimagenurl)
+                entity.Property(e => e.Url)
                     .IsUnicode(false)
-                    .HasColumnName("PROMOCIONIMAGENURL");
+                    .HasColumnName("URL");
 
                 entity.HasOne(d => d.Promocion)
-                    .WithMany(p => p.Promocionimagens)
-                    .HasForeignKey(d => d.Promocionid)
+                    .WithMany(p => p.Promocionimagen)
+                    .HasForeignKey(d => d.PromocionId)
                     .HasConstraintName("FK_PROMOCIO_RELATIONS_PROMOCIO");
             });
 

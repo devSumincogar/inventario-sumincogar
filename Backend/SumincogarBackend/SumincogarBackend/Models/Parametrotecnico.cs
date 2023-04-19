@@ -5,11 +5,11 @@ namespace SumincogarBackend.Models
 {
     public partial class Parametrotecnico
     {
-        public int Parametrotecnicoid { get; set; }
-        public int? Productoid { get; set; }
+        public int ParametroTecnicoId { get; set; }
+        public int? FichaTecnicaId { get; set; }
         public string Clave { get; set; } = null!;
         public string Valor { get; set; } = null!;
 
-        public virtual Producto? Producto { get; set; }
+        public virtual Fichatecnica? FichaTecnica { get; set; }
     }
 }

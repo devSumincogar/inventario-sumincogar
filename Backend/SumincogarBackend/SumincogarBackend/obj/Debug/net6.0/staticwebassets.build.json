@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "wctyyJ4n9+xT14hx4cNSbd/meAtK7/T8j8WXD1U+VTY=",
+  "Hash": "XqJ/3VX0u11gRIUxjf6UZmRAexTS8NXWzDkxA5Y9wdk=",
   "Source": "SumincogarBackend",
   "BasePath": "_content/SumincogarBackend",
   "Mode": "Default",
@@ -10,17 +10,34 @@
     {
       "Name": "SumincogarBackend\\wwwroot",
       "Source": "SumincogarBackend",
-      "ContentRoot": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\wwwroot\\",
+      "ContentRoot": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\",
       "BasePath": "_content/SumincogarBackend",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\0b56578b-d50a-45ff-bf5d-4feccab885ac.png",
+      "Identity": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\000b6617-a213-4c66-adbf-238ed960c0ef.pdf",
       "SourceId": "SumincogarBackend",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\wwwroot\\",
+      "ContentRoot": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\",
+      "BasePath": "_content/SumincogarBackend",
+      "RelativePath": "producto/000b6617-a213-4c66-adbf-238ed960c0ef.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\producto\\000b6617-a213-4c66-adbf-238ed960c0ef.pdf"
+    },
+    {
+      "Identity": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\0b56578b-d50a-45ff-bf5d-4feccab885ac.png",
+      "SourceId": "SumincogarBackend",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\",
       "BasePath": "_content/SumincogarBackend",
       "RelativePath": "producto/0b56578b-d50a-45ff-bf5d-4feccab885ac.png",
       "AssetKind": "All",
@@ -34,10 +51,10 @@
       "OriginalItemSpec": "wwwroot\\producto\\0b56578b-d50a-45ff-bf5d-4feccab885ac.png"
     },
     {
-      "Identity": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\553f0e19-f1f5-4e32-ab53-13b74402a371.pdf",
+      "Identity": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\553f0e19-f1f5-4e32-ab53-13b74402a371.pdf",
       "SourceId": "SumincogarBackend",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\wwwroot\\",
+      "ContentRoot": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\",
       "BasePath": "_content/SumincogarBackend",
       "RelativePath": "producto/553f0e19-f1f5-4e32-ab53-13b74402a371.pdf",
       "AssetKind": "All",
@@ -49,6 +66,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\producto\\553f0e19-f1f5-4e32-ab53-13b74402a371.pdf"
+    },
+    {
+      "Identity": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\9ad0d875-b208-4626-b8a8-5e8d49e5121c.png",
+      "SourceId": "SumincogarBackend",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\",
+      "BasePath": "_content/SumincogarBackend",
+      "RelativePath": "producto/9ad0d875-b208-4626-b8a8-5e8d49e5121c.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\producto\\9ad0d875-b208-4626-b8a8-5e8d49e5121c.png"
     }
   ]
 }

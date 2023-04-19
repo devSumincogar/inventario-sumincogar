@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj": {}
+    "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj": {
+    "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj",
+        "projectUniqueName": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj",
         "projectName": "SumincogarBackend",
-        "projectPath": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj",
+        "projectPath": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj",
         "packagesPath": "C:\\Users\\Alexis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\obj\\",
+        "outputPath": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Alexis\\AppData\\Roaming\\NuGet\\NuGet.Config",

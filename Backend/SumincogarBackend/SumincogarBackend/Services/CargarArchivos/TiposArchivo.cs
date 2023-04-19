@@ -4,6 +4,7 @@
     {
         FichaTecnica,
         ImagenProducto,
-        ImagenReferencialProducto,
+        Catalogo,
+        Promocion,
     }
 }

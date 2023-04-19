@@ -24,9 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Context\" />
-    <Folder Include="DTO\CatalogoDTO\" />
-    <Folder Include="DTO\DetalleInventarioDTO\" />
-    <Folder Include="DTO\PromocionDTO\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

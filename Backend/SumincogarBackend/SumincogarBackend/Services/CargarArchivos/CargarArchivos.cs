@@ -55,8 +55,6 @@ namespace SumincogarBackend.Services.CargarArchivos
                     return "fichaTecnica";
                 case TiposArchivo.ImagenProducto:
                     return "producto";
-                case TiposArchivo.ImagenReferencialProducto:
-                    return "imgProductoReferencial";
                 default:
                     return "";
             }

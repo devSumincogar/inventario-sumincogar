@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MoLrwoFxRVI5K3dYVw1eQ+RgPYVkDQxtIaKcqiiil5aAD9nZJlxS3kTVa1DL5x+MQDKQTkWUsXp+4IGXvbPvgA==",
+  "dgSpecHash": "ODoMsR+NO+WwM7CkvzZ4Sq90sL21FoxUhQjQZQcfmfDYvYggMHVAybT+dgRIXX3ixWGuQsP0U+lONYzcRgw/qA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Alexis\\Desktop\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj",
+  "projectFilePath": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alexis\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Alexis\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

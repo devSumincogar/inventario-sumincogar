@@ -1,119 +1,115 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SumincogarBackend.Contexts;
-using SumincogarBackend.DTO.CategoriaDTO;
-using SumincogarBackend.DTO.ProductoDTO;
-using SumincogarBackend.Models;
-using SumincogarBackend.Services.AlmacenadorArchivos;
-using SumincogarBackend.Services.CargarArchivos;
+﻿//using AutoMapper;
+//using Microsoft.AspNetCore.Authentication.JwtBearer;
+//using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+//using SumincogarBackend.Contexts;
+//using SumincogarBackend.DTO.CategoriaDTO;
+//using SumincogarBackend.DTO.ProductoDTO;
+//using SumincogarBackend.Models;
+//using SumincogarBackend.Services.AlmacenadorArchivos;
+//using SumincogarBackend.Services.CargarArchivos;
 
-namespace SumincogarBackend.Controllers
-{
-    [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [ApiController]
-    public class ProductosController : ControllerBase
-    {
-        private readonly db_a977c3_sumincogarContext _context;
-        private readonly IMapper _mapper;
-        private readonly ICargarArchivos _cargarArchivos;
+//namespace SumincogarBackend.Controllers
+//{
+//    [Route("api/[controller]")]
+//    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+//    [ApiController]
+//    public class ProductosController : ControllerBase
+//    {
+//        private readonly db_a977c3_sumincogarContext _context;
+//        private readonly IMapper _mapper;
+//        private readonly ICargarArchivos _cargarArchivos;
 
-        
 
-        public ProductosController(db_a977c3_sumincogarContext context, IMapper mapper, ICargarArchivos cargarArchivos)
-        {
-            _context = context;
-            _mapper = mapper;
-            _cargarArchivos = cargarArchivos;
-        }
 
-        [HttpGet()]
-        public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetProductos([FromQuery] int categoriaId)
-        {
-            var productos = await _context.Productos.Include(x => x.Categoria)
-                .Where(x => x.Categoriaid == categoriaId).ToListAsync();
+//        public ProductosController(db_a977c3_sumincogarContext context, IMapper mapper, ICargarArchivos cargarArchivos)
+//        {
+//            _context = context;
+//            _mapper = mapper;
+//            _cargarArchivos = cargarArchivos;
+//        }
 
-            return _mapper.Map<List<BuscarProducto>>(productos);
-        }
+//        [HttpGet()]
+//        public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetProductos([FromQuery] int categoriaId)
+//        {
+//            var productos = await _context.Producto.Include(x => x.Categoria)
+//                .Where(x => x.Categoriaid == categoriaId).ToListAsync();
 
-        [HttpGet("{productoId}")]
-        public async Task<ActionResult<BuscarProducto>> GetProducto(int productoId)
-        {
-            var producto = await _context.Productos.Include(x => x.Categoria)
-                .FirstOrDefaultAsync(x => x.Productoid == productoId);
+//            return _mapper.Map<List<BuscarProducto>>(productos);
+//        }
 
-            if (producto == null) return NotFound();
+//        [HttpGet("{productoId}")]
+//        public async Task<ActionResult<BuscarProducto>> GetProducto(int productoId)
+//        {
+//            var producto = await _context.Producto.Include(x => x.Categoria)
+//                .FirstOrDefaultAsync(x => x.Productoid == productoId);
 
-            return _mapper.Map<BuscarProducto>(producto);
-        }
+//            if (producto == null) return NotFound();
 
-        [HttpPut("{productoId}")]
-        public async Task<ActionResult<BuscarProducto>> PutProducto(int productoId, [FromForm] CrearProducto crearProducto)
-        {
-            if (await ExistNameOrCode(crearProducto)) return BadRequest($"Ya existe el producto con nombre {crearProducto.Productonombre} o código {crearProducto.Codigo}");
+//            return _mapper.Map<BuscarProducto>(producto);
+//        }
 
-            var producto = await _context.Productos.FindAsync(productoId);
-            producto = _mapper.Map(crearProducto, producto);
+//        [HttpPut("{productoId}")]
+//        public async Task<ActionResult<BuscarProducto>> PutProducto(int productoId, [FromForm] CrearProducto crearProducto)
+//        {
+//            if (await ExistNameOrCode(crearProducto)) return BadRequest($"Ya existe el producto con nombre {crearProducto.Productonombre} o código {crearProducto.Codigo}");
 
-            if (crearProducto.Imagenreferencial != null)
-            {
-                producto!.Imagenreferencial = await _cargarArchivos.ActualizarArchivo(TiposArchivo.ImagenProducto, crearProducto.Imagenreferencial, producto.Imagenreferencial!);                
-            }
+//            var producto = await _context.Producto.FindAsync(productoId);
+//            producto = _mapper.Map(crearProducto, producto);
 
-            if (crearProducto.Fichatenicapdf != null)
-            {
-                producto!.Fichatenicapdf = await _cargarArchivos.ActualizarArchivo(TiposArchivo.ImagenProducto, crearProducto.Fichatenicapdf, producto.Fichatenicapdf!);
-            }
+//            if (crearProducto.Imagenreferencial != null)
+//            {
+//                //producto!.Imagenreferencial = await _cargarArchivos.ActualizarArchivo(TiposArchivo.ImagenProducto, crearProducto.Imagenreferencial!, producto.ImagenUrl!);
+//            }
 
-            try
-            {
-                _context.Entry(producto!).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest();
-            }
 
-            producto = await _context.Productos.Include(x => x.Categoria)
-                .FirstOrDefaultAsync(x => x.Productoid == productoId);
+//            try
+//            {
+//                _context.Entry(producto!).State = EntityState.Modified;
+//                await _context.SaveChangesAsync();
+//            }
+//            catch (DbUpdateConcurrencyException)
+//            {
+//                return BadRequest();
+//            }
 
-            return _mapper.Map<BuscarProducto>(producto);
-        }
+//            producto = await _context.Producto.Include(x => x.Categoria)
+//                .FirstOrDefaultAsync(x => x.Productoid == productoId);
 
-        [HttpPost]
-        public async Task<ActionResult<BuscarProducto>> PostProducto([FromForm] CrearProducto crearProducto)
-        {
-            if (await ExistNameOrCode(crearProducto)) return BadRequest($"Ya existe el producto con nombre {crearProducto.Productonombre} o código {crearProducto.Codigo}");
+//            return _mapper.Map<BuscarProducto>(producto);
+//        }
 
-            var producto = _mapper.Map<Producto>(crearProducto);
+//        [HttpPost]
+//        public async Task<ActionResult<BuscarProducto>> PostProducto([FromForm] CrearProducto crearProducto)
+//        {
+//            if (await ExistNameOrCode(crearProducto)) return BadRequest($"Ya existe el producto con nombre {crearProducto.Productonombre} o código {crearProducto.Codigo}");
 
-            if (crearProducto.Imagenreferencial != null)
-            {
-                producto!.Imagenreferencial = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearProducto.Imagenreferencial);
-            }
+//            var producto = _mapper.Map<Producto>(crearProducto);
 
-            if (crearProducto.Fichatenicapdf != null)
-            {
-                producto!.Fichatenicapdf = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearProducto.Fichatenicapdf);
-            }
+//            if (crearProducto.Imagenreferencial != null)
+//            {
+//                producto!.Imagenreferencial = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearProducto.Imagenreferencial);
+//            }
 
-            _context.Productos.Add(producto);
-            await _context.SaveChangesAsync();
+//            if (crearProducto.Fichatenicapdf != null)
+//            {
+//                producto!.Fichatenicapdf = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearProducto.Fichatenicapdf);
+//            }
 
-            producto = await _context.Productos.Include(x => x.Categoria)
-                .FirstOrDefaultAsync(x => x.Productoid == producto.Productoid);
+//            _context.PRODUCTOs.Add(producto);
+//            await _context.SaveChangesAsync();
 
-            return _mapper.Map<BuscarProducto>(producto);
-        }
+//            producto = await _context.PRODUCTOs.Include(x => x.Categoria)
+//                .FirstOrDefaultAsync(x => x.Productoid == producto.Productoid);
 
-        private async Task<bool> ExistNameOrCode(CrearProducto producto)
-        {
-            return await _context.Productos.AnyAsync(x => x.Productonombre.Equals(producto.Productonombre) || x.Codigo.Equals(producto.Codigo));
-        }
-    }
-}
+//            return _mapper.Map<BuscarProducto>(producto);
+//        }
+
+//        private async Task<bool> ExistNameOrCode(CrearProducto producto)
+//        {
+//            return await _context.PRODUCTOs.AnyAsync(x => x.Productonombre.Equals(producto.Productonombre) || x.Codigo.Equals(producto.Codigo));
+//        }
+//    }
+//}
