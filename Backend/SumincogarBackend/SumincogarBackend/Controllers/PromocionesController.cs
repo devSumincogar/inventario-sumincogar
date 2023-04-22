@@ -41,7 +41,7 @@ namespace SumincogarBackend.Controllers
             return _mapper.Map<List<BuscarPromocion>>(promociones);
         }
 
-        [HttpGet]
+        [HttpGet("disponibles")]
         public async Task<ActionResult<IEnumerable<BuscarPromocion>>> GetPromocionesDisponibles()
         {
             var promociones = await _context.Promocion.Include(x => x.Promocionimagen)
@@ -53,7 +53,7 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BuscarPromocion>> PutPromocion(int id, CrearPromocion crearPromocion)
+        public async Task<ActionResult<BuscarPromocion>> PutPromocion(int id, [FromForm] CrearPromocion crearPromocion)
         {
             var promocion = await _context.Promocion.FindAsync(id);
             promocion = _mapper.Map(crearPromocion, promocion);
@@ -80,7 +80,7 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BuscarPromocion>> PostPromocion(CrearPromocion crearPromocion)
+        public async Task<ActionResult<BuscarPromocion>> PostPromocion([FromForm] CrearPromocion crearPromocion)
         {
             var promocion = _mapper.Map<Promocion>(crearPromocion);
 
@@ -118,7 +118,7 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpPost("promocionImagen")]
-        public async Task<IActionResult> PostPromocionImagen(CrearPromocionImagen crearPromocionImagen)
+        public async Task<IActionResult> PostPromocionImagen([FromForm] CrearPromocionImagen crearPromocionImagen)
         {
             var promocionImagen = _mapper.Map<Promocionimagen>(crearPromocionImagen);
 

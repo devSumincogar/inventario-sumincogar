@@ -1,4 +1,6 @@
-﻿namespace SumincogarBackend.DTO.DetalleInventarioDTO
+﻿using SumincogarBackend.DTO.FichaTecnicaDTO;
+
+namespace SumincogarBackend.DTO.DetalleInventarioDTO
 {
     public class BuscarDetalleInventario
     {
@@ -8,5 +10,6 @@
         public string? Stock { get; set; }
         public string? Impresion { get; set; }
         public string? Colores { get; set; }
+        public BuscarFichaTecnica FichaTecnica { get; set; } = new BuscarFichaTecnica();
     }
 }

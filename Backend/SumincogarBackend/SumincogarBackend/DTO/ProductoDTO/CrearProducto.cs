@@ -4,11 +4,9 @@ namespace SumincogarBackend.DTO.ProductoDTO
 {
     public class CrearProducto
     {
-        [Required]
-        public int Categoriaid { get; set; }
-        public string Codigo { get; set; } = string.Empty;
-        public string Productonombre { get; set; } = string.Empty!;
-        public IFormFile? Fichatenicapdf { get; set; }
-        public IFormFile? Imagenreferencial { get; set; }
+        public int? FichaTecnicaId { get; set; }
+        public string Codigo { get; set; } = null!;
+        public string ProductoNombre { get; set; } = null!;
+        public IFormFile? ImagenUrl { get; set; }
     }
 }

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SumincogarBackend.Contexts;
+using SumincogarBackend.DTO.DetalleInventarioDTO;
 using SumincogarBackend.Models;
 using SumincogarBackend.Services.CargarArchivos;
 using System.Text;
@@ -24,6 +26,12 @@ namespace SumincogarBackend.Controllers
             _mapper = mapper;
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult<BuscarDetalleInventario>> GetDetalleInventario([FromQuery] string Codigo)
+        //{
+
+        //}
+
         [HttpPost]
         public async Task<IActionResult> CargarDetallesInventario(IFormFile files)
         {
@@ -41,7 +49,7 @@ namespace SumincogarBackend.Controllers
                 {                    
                     if (!string.IsNullOrEmpty(item))
                     {
-                        var cells = item.Split(";");
+                        var cells = item.Split(",");
                         
                         var detalle = new Detalleinventario
                         {
@@ -53,6 +61,16 @@ namespace SumincogarBackend.Controllers
                         };
 
                         detalles.Add(detalle);
+                    }
+                }
+
+                if(detalles.Count > 0)
+                {
+                    var detallesBorrar = await _context.Detalleinventario.ToListAsync();
+                    if (detallesBorrar.Count > 0)
+                    {
+                        _context.Detalleinventario.RemoveRange(detallesBorrar);
+                        await _context.SaveChangesAsync();
                     }
                 }
 

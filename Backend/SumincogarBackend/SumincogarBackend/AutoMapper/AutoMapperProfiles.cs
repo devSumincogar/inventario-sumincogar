@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SumincogarBackend.DTO.CatalogoDTO;
 using SumincogarBackend.DTO.CategoriaDTO;
+using SumincogarBackend.DTO.DetalleInventarioDTO;
 using SumincogarBackend.DTO.FichaTecnicaDTO;
 using SumincogarBackend.DTO.ParametroTecnicoDTO;
 using SumincogarBackend.DTO.ProductoDTO;
@@ -49,11 +50,21 @@ namespace SumincogarBackend.AutoMapper
                 .ForMember(dest => dest.Url,
                     opt => opt.MapFrom(src => src.Url == null ? "" : src.Url));
 
-            //CreateMap<CrearProducto, PRODUCTO>();
-            //CreateMap<PRODUCTO, BuscarProducto>().ForMember(
-            //    dest => dest.CategoriaNombre,
-            //    opt => opt.MapFrom(src => src.Categoria!.Categorianombre)
-            //); ;
+            CreateMap<CrearProducto, Producto>()
+                .ForMember(x => x.ImagenUrl, options => options.Ignore());
+            CreateMap<Producto, BuscarProducto>().ForMember(
+                dest => dest.ImagenUrl,
+                opt => opt.MapFrom(src => src.ImagenUrl == null ? "" : src.ImagenUrl)
+            ).ForMember(dest => dest.Imagenes,
+                    opt => opt.MapFrom(src => src.Imagenreferencial));
+            CreateMap<CrearImagenReferencial, Imagenreferencial>()
+                .ForMember(x => x.Url, options => options.Ignore());
+            CreateMap<Imagenreferencial, BuscarImagenRefencial>().ForMember(
+                dest => dest.Url,
+                opt => opt.MapFrom(src => src.Url == null ? "" : src.Url)
+            );
+
+            CreateMap<Detalleinventario, BuscarDetalleInventario>();
         }
     }
 }

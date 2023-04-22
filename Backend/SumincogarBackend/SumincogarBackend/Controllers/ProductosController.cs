@@ -1,115 +1,142 @@
-﻿//using AutoMapper;
-//using Microsoft.AspNetCore.Authentication.JwtBearer;
-//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using SumincogarBackend.Contexts;
-//using SumincogarBackend.DTO.CategoriaDTO;
-//using SumincogarBackend.DTO.ProductoDTO;
-//using SumincogarBackend.Models;
-//using SumincogarBackend.Services.AlmacenadorArchivos;
-//using SumincogarBackend.Services.CargarArchivos;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SumincogarBackend.Contexts;
+using SumincogarBackend.DTO.ProductoDTO;
+using SumincogarBackend.Models;
+using SumincogarBackend.Services.CargarArchivos;
 
-//namespace SumincogarBackend.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-//    [ApiController]
-//    public class ProductosController : ControllerBase
-//    {
-//        private readonly db_a977c3_sumincogarContext _context;
-//        private readonly IMapper _mapper;
-//        private readonly ICargarArchivos _cargarArchivos;
+namespace SumincogarBackend.Controllers
+{
+    [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ApiController]
+    public class ProductosController : ControllerBase
+    {
+        private readonly db_a977c3_sumincogarContext _context;
+        private readonly IMapper _mapper;
+        private readonly ICargarArchivos _cargarArchivos;
 
+        public ProductosController(db_a977c3_sumincogarContext context, IMapper mapper, ICargarArchivos cargarArchivos)
+        {
+            _context = context;
+            _mapper = mapper;
+            _cargarArchivos = cargarArchivos;
+        }
 
+        [HttpGet()]
+        public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetProductos([FromQuery] int? fichaTecnicaId)
+        {
+            var productos = await _context.Producto
+                .Include(x => x.Imagenreferencial)
+                .Where(x => x.FichaTecnicaId == fichaTecnicaId || fichaTecnicaId == null)
+                .ToListAsync();
 
-//        public ProductosController(db_a977c3_sumincogarContext context, IMapper mapper, ICargarArchivos cargarArchivos)
-//        {
-//            _context = context;
-//            _mapper = mapper;
-//            _cargarArchivos = cargarArchivos;
-//        }
+            return _mapper.Map<List<BuscarProducto>>(productos);
+        }
 
-//        [HttpGet()]
-//        public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetProductos([FromQuery] int categoriaId)
-//        {
-//            var productos = await _context.Producto.Include(x => x.Categoria)
-//                .Where(x => x.Categoriaid == categoriaId).ToListAsync();
+        [HttpGet("{productoId}")]
+        public async Task<ActionResult<BuscarProducto>> GetProducto(int productoId)
+        {
+            var producto = await _context.Producto.Include(x => x.Imagenreferencial).FirstOrDefaultAsync(x => x.ProductoId == productoId);
 
-//            return _mapper.Map<List<BuscarProducto>>(productos);
-//        }
+            if (producto == null) return NotFound();
 
-//        [HttpGet("{productoId}")]
-//        public async Task<ActionResult<BuscarProducto>> GetProducto(int productoId)
-//        {
-//            var producto = await _context.Producto.Include(x => x.Categoria)
-//                .FirstOrDefaultAsync(x => x.Productoid == productoId);
+            return _mapper.Map<BuscarProducto>(producto);
+        }
 
-//            if (producto == null) return NotFound();
+        [HttpPut("{productoId}")]
+        public async Task<ActionResult<BuscarProducto>> PutProducto(int productoId, [FromForm] CrearProducto crearProducto)
+        {            
+            var producto = await _context.Producto.FindAsync(productoId);
+            producto = _mapper.Map(crearProducto, producto);
 
-//            return _mapper.Map<BuscarProducto>(producto);
-//        }
+            if (crearProducto.ImagenUrl != null)
+            {
+                producto!.ImagenUrl = await _cargarArchivos.ActualizarArchivo(TiposArchivo.ImagenProducto, crearProducto.ImagenUrl!, producto.ImagenUrl!);
+            }
 
-//        [HttpPut("{productoId}")]
-//        public async Task<ActionResult<BuscarProducto>> PutProducto(int productoId, [FromForm] CrearProducto crearProducto)
-//        {
-//            if (await ExistNameOrCode(crearProducto)) return BadRequest($"Ya existe el producto con nombre {crearProducto.Productonombre} o código {crearProducto.Codigo}");
+            try
+            {
+                _context.Entry(producto!).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
 
-//            var producto = await _context.Producto.FindAsync(productoId);
-//            producto = _mapper.Map(crearProducto, producto);
+            producto = await _context.Producto.FirstOrDefaultAsync(x => x.ProductoId == productoId);
 
-//            if (crearProducto.Imagenreferencial != null)
-//            {
-//                //producto!.Imagenreferencial = await _cargarArchivos.ActualizarArchivo(TiposArchivo.ImagenProducto, crearProducto.Imagenreferencial!, producto.ImagenUrl!);
-//            }
+            return _mapper.Map<BuscarProducto>(producto);
+        }
 
+        [HttpPost]
+        public async Task<ActionResult<BuscarProducto>> PostProducto([FromForm] CrearProducto crearProducto)
+        {
+            if (await ExistNameOrCode(crearProducto)) return BadRequest($"Ya existe el producto con nombre {crearProducto.ProductoNombre} o código {crearProducto.Codigo}");
 
-//            try
-//            {
-//                _context.Entry(producto!).State = EntityState.Modified;
-//                await _context.SaveChangesAsync();
-//            }
-//            catch (DbUpdateConcurrencyException)
-//            {
-//                return BadRequest();
-//            }
+            var producto = _mapper.Map<Producto>(crearProducto);
 
-//            producto = await _context.Producto.Include(x => x.Categoria)
-//                .FirstOrDefaultAsync(x => x.Productoid == productoId);
+            if (crearProducto.ImagenUrl != null)
+            {
+                producto!.ImagenUrl = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearProducto.ImagenUrl);
+            }
 
-//            return _mapper.Map<BuscarProducto>(producto);
-//        }
+            _context.Producto.Add(producto);
+            await _context.SaveChangesAsync();
 
-//        [HttpPost]
-//        public async Task<ActionResult<BuscarProducto>> PostProducto([FromForm] CrearProducto crearProducto)
-//        {
-//            if (await ExistNameOrCode(crearProducto)) return BadRequest($"Ya existe el producto con nombre {crearProducto.Productonombre} o código {crearProducto.Codigo}");
+            producto = await _context.Producto
+                .FirstOrDefaultAsync(x => x.ProductoId == producto.ProductoId);
 
-//            var producto = _mapper.Map<Producto>(crearProducto);
+            return _mapper.Map<BuscarProducto>(producto);
+        }
 
-//            if (crearProducto.Imagenreferencial != null)
-//            {
-//                producto!.Imagenreferencial = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearProducto.Imagenreferencial);
-//            }
+        [HttpPost("imagenReferencial")]
+        public async Task<IActionResult> PostImagenReferencialProducto([FromForm] CrearImagenReferencial crearImagenReferencial)
+        {
+            var imagenReferencial = _mapper.Map<Imagenreferencial>(crearImagenReferencial);
 
-//            if (crearProducto.Fichatenicapdf != null)
-//            {
-//                producto!.Fichatenicapdf = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearProducto.Fichatenicapdf);
-//            }
+            if(crearImagenReferencial.Url != null)
+            {
+                imagenReferencial!.Url = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearImagenReferencial!.Url!);
+            }
 
-//            _context.PRODUCTOs.Add(producto);
-//            await _context.SaveChangesAsync();
+            _context.Imagenreferencial.Add(imagenReferencial);
+            await _context.SaveChangesAsync();
 
-//            producto = await _context.PRODUCTOs.Include(x => x.Categoria)
-//                .FirstOrDefaultAsync(x => x.Productoid == producto.Productoid);
+            return Ok();
+        }
 
-//            return _mapper.Map<BuscarProducto>(producto);
-//        }
+        [HttpDelete("imagenReferencial/{id}")]
+        public async Task<IActionResult> DeleteImagenReferencialProducto(int id)
+        {
+            if (_context.Imagenreferencial == null)
+            {
+                return NotFound();
+            }
+            var imagenReferencial = await _context.Imagenreferencial.FindAsync(id);
+            if (imagenReferencial == null)
+            {
+                return NotFound();
+            }
 
-//        private async Task<bool> ExistNameOrCode(CrearProducto producto)
-//        {
-//            return await _context.PRODUCTOs.AnyAsync(x => x.Productonombre.Equals(producto.Productonombre) || x.Codigo.Equals(producto.Codigo));
-//        }
-//    }
-//}
+            if (imagenReferencial.Url != null)
+            {
+                await _cargarArchivos.BorrarArchivo(TiposArchivo.Catalogo, imagenReferencial.Url);
+            }
+
+            _context.Imagenreferencial.Remove(imagenReferencial);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        private async Task<bool> ExistNameOrCode(CrearProducto producto)
+        {
+            return await _context.Producto.AnyAsync(x => x.ProductoNombre.Equals(producto.ProductoNombre) || x.Codigo.Equals(producto.Codigo));
+        }
+    }
+}

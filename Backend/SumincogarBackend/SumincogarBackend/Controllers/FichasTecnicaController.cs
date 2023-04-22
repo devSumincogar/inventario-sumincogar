@@ -32,7 +32,7 @@ namespace SumincogarBackend.Controllers
             _cargarArchivos = cargarArchivos;
         }
 
-        [HttpGet("{categoriaId}")]
+        [HttpGet("categoria/{categoriaId}")]
         public async Task<ActionResult<IEnumerable<BuscarFichaTecnica>>> GetFichatecnicaXCategoria(int categoriaId)
         {
             var fichasTecnicas = await _context.Fichatecnica.Include(x => x.Categoria)
@@ -50,7 +50,7 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BuscarFichaTecnica>> PutFichatecnica(int id, CrearFichaTecnica crearFichaTecnica)
+        public async Task<ActionResult<BuscarFichaTecnica>> PutFichatecnica(int id, [FromForm] CrearFichaTecnica crearFichaTecnica)
         {
             var fichaTecnica = await _context.Fichatecnica.FindAsync(id);
             fichaTecnica = _mapper.Map(crearFichaTecnica, fichaTecnica);
@@ -77,7 +77,7 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BuscarFichaTecnica>> PostFichatecnica(CrearFichaTecnica crearFichaTecnica)
+        public async Task<ActionResult<BuscarFichaTecnica>> PostFichatecnica([FromForm] CrearFichaTecnica crearFichaTecnica)
         {
             var fichaTecnica = _mapper.Map<Fichatecnica>(crearFichaTecnica);
 

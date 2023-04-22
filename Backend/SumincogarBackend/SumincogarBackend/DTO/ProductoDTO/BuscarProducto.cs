@@ -2,12 +2,11 @@
 {
     public class BuscarProducto
     {
-        public int Productoid { get; set; }
-        public int Categoriaid { get; set; }
-        public string CategoriaNombre { get; set; } = string.Empty;
-        public string Codigo { get; set; } = string.Empty;
-        public string Productonombre { get; set; } = string.Empty;
-        public string Fichatenicapdf { get; set; } = string.Empty;
-        public string Imagenreferencial { get; set; } = string.Empty;
+        public int ProductoId { get; set; }
+        public int? FichaTecnicaId { get; set; }
+        public string Codigo { get; set; } = null!;
+        public string ProductoNombre { get; set; } = null!;
+        public string? ImagenUrl { get; set; }
+        public List<BuscarImagenRefencial> Imagenes { get; set; } = new List<BuscarImagenRefencial>();
     }
 }

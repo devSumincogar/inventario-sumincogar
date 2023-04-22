@@ -48,6 +48,11 @@ namespace SumincogarBackend.Services.CargarArchivos
             }
         }
 
+        public async Task BorrarArchivo(TiposArchivo tiposArchivo,string ruta)
+        {
+            await _almacenadorArchivos.BorrarArchivo(ruta, Contenedor(tiposArchivo));
+        }
+
         private string Contenedor(TiposArchivo tiposArchivo)
         {
             switch (tiposArchivo) {
@@ -55,6 +60,8 @@ namespace SumincogarBackend.Services.CargarArchivos
                     return "fichaTecnica";
                 case TiposArchivo.ImagenProducto:
                     return "producto";
+                case TiposArchivo.Catalogo:
+                    return "catalogo";
                 default:
                     return "";
             }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SumincogarBackend.Models;
 
 namespace SumincogarBackend.Contexts
 {
-    public partial class db_a977c3_sumincogarContext : DbContext
+    public partial class db_a977c3_sumincogarContext : IdentityDbContext
     {
         public db_a977c3_sumincogarContext()
         {
@@ -29,15 +30,12 @@ namespace SumincogarBackend.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=sql8001.site4now.net;Database=db_a977c3_sumincogar;User ID=db_a977c3_sumincogar_admin;Password=Sumincogar2023**;");
-            }
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Catalogo>(entity =>
             {
                 entity.ToTable("CATALOGO");

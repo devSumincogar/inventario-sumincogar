@@ -33,14 +33,14 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BuscarCatalogo>>> GetCatalogo([FromQuery] string nombre)
+        public async Task<ActionResult<IEnumerable<BuscarCatalogo>>> GetCatalogo([FromQuery] string? nombre)
         {
-            var catalogos = await _context.Catalogo.Where(x => x.Nombre.Contains(nombre)).ToListAsync();
+            var catalogos = await _context.Catalogo.Where(x => x.Nombre.Contains(nombre!) || nombre == null).ToListAsync();
             return _mapper.Map<List<BuscarCatalogo>>(catalogos);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BuscarCatalogo>> PutCatalogo(int id, CrearCatalogo crearCatalogo)
+        public async Task<ActionResult<BuscarCatalogo>> PutCatalogo(int id, [FromForm] CrearCatalogo crearCatalogo)
         {
             var catalogo = await _context.Catalogo.FindAsync(id);
             catalogo = _mapper.Map(crearCatalogo, catalogo);
@@ -69,7 +69,7 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BuscarCatalogo>> PostCatalogo(CrearCatalogo crearCatalogo)
+        public async Task<ActionResult<BuscarCatalogo>> PostCatalogo([FromForm] CrearCatalogo crearCatalogo)
         {
             var catalogo = _mapper.Map<Catalogo>(crearCatalogo);
 
@@ -100,6 +100,16 @@ namespace SumincogarBackend.Controllers
             if (catalogo == null)
             {
                 return NotFound();
+            }
+
+            if (catalogo.Url != null)
+            {
+                await _cargarArchivos.BorrarArchivo(TiposArchivo.Catalogo, catalogo.Url);
+            }
+
+            if (catalogo.ImagenUrl != null)
+            {
+                await _cargarArchivos.BorrarArchivo(TiposArchivo.Catalogo, catalogo.ImagenUrl);
             }
 
             _context.Catalogo.Remove(catalogo);
