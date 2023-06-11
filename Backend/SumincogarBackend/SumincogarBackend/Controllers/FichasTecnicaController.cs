@@ -36,6 +36,7 @@ namespace SumincogarBackend.Controllers
         public async Task<ActionResult<IEnumerable<BuscarFichaTecnica>>> GetFichatecnicaXCategoria(int categoriaId)
         {
             var fichasTecnicas = await _context.Fichatecnica.Include(x => x.Categoria)
+                .Include(x => x.Parametrotecnico)
                 .Where(x => x.CategoriaId == categoriaId).ToListAsync();
             return _mapper.Map<List<BuscarFichaTecnica>>(fichasTecnicas);
         }
@@ -44,6 +45,7 @@ namespace SumincogarBackend.Controllers
         public async Task<ActionResult<BuscarFichaTecnica>> GetFichatecnica(int id)
         {
             var fichatecnica = await _context.Fichatecnica.Include(x => x.Categoria)
+                .Include(x => x.Parametrotecnico)
                 .FirstOrDefaultAsync(x => x.FichaTecnicaId == id);
 
             return _mapper.Map<BuscarFichaTecnica>(fichatecnica);
@@ -71,6 +73,7 @@ namespace SumincogarBackend.Controllers
             }
 
             fichaTecnica = await _context.Fichatecnica.Include(x => x.Categoria)
+                .Include(x => x.Parametrotecnico)
                 .FirstOrDefaultAsync(x => x.FichaTecnicaId == id);
 
             return _mapper.Map<BuscarFichaTecnica>(fichaTecnica);
@@ -90,6 +93,7 @@ namespace SumincogarBackend.Controllers
             await _context.SaveChangesAsync();
 
             fichaTecnica = await _context.Fichatecnica.Include(x => x.Categoria)
+                .Include(x => x.Parametrotecnico)
                 .FirstOrDefaultAsync(x => x.FichaTecnicaId == fichaTecnica.FichaTecnicaId);
 
             return _mapper.Map<BuscarFichaTecnica>(fichaTecnica);

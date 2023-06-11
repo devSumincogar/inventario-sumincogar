@@ -9,7 +9,6 @@ namespace SumincogarBackend.DTO.DetalleInventarioDTO
         public string? CodProducto { get; set; }
         public string? Stock { get; set; }
         public string? Impresion { get; set; }
-        public string? Colores { get; set; }
-        public BuscarFichaTecnica FichaTecnica { get; set; } = new BuscarFichaTecnica();
+        public string? Colores { get; set; }        
     }
 }

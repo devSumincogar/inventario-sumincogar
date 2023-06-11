@@ -45,7 +45,7 @@ namespace SumincogarBackend.Controllers
         public async Task<ActionResult<IEnumerable<BuscarPromocion>>> GetPromocionesDisponibles()
         {
             var promociones = await _context.Promocion.Include(x => x.Promocionimagen)
-                .Where(x => DateTime.Now > x.FechaCaducidad)
+                .Where(x => x.FechaCaducidad > DateTime.Now)
                 .OrderBy(x => x.FechaIngreso)
                 .ToListAsync();
 

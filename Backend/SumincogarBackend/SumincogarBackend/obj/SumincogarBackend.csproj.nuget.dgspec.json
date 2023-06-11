@@ -1,27 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj": {}
+    "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/SumincogarBackend.csproj": {}
   },
   "projects": {
-    "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj": {
+    "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/SumincogarBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj",
+        "projectUniqueName": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/SumincogarBackend.csproj",
         "projectName": "SumincogarBackend",
-        "projectPath": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\SumincogarBackend.csproj",
-        "packagesPath": "C:\\Users\\Alexis\\.nuget\\packages\\",
-        "outputPath": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\obj\\",
+        "projectPath": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/SumincogarBackend.csproj",
+        "packagesPath": "/Users/alexismaldonado/.nuget/packages/",
+        "outputPath": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Alexis\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/alexismaldonado/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
+          "/usr/local/share/dotnet/sdk/7.0.302/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -98,7 +98,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.302/RuntimeIdentifierGraph.json"
         }
       }
     }

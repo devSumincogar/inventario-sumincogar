@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="..\buildMultiTargeting\SumincogarBackend.props" />
+  <Import Project="../buildMultiTargeting/SumincogarBackend.props" />
 </Project>

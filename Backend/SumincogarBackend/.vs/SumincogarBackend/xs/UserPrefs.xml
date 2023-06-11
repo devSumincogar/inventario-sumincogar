@@ -1,0 +1,49 @@
+﻿<Properties StartupConfiguration="{EA3E2132-400C-4E65-8764-6E08BF6DC6CD}|Default">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.SumincogarBackend PreferredExecutionTarget="/Applications/Opera GX.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SumincogarBackend/Controllers/ProductosController.cs">
+    <Files>
+      <File FileName="SumincogarBackend/Controllers/ProductosController.cs" Line="85" Column="49" />
+      <File FileName="SumincogarBackend/Controllers/PromocionesController.cs" />
+      <File FileName="SumincogarBackend/DTO/ProductoDTO/InfoGeneralProducto.cs" />
+      <File FileName="SumincogarBackend/DTO/FichaTecnicaDTO/BuscarFichaTecnica.cs" />
+      <File FileName="SumincogarBackend/DTO/ProductoDTO/BuscarProducto.cs" />
+      <File FileName="SumincogarBackend/Controllers/DetallesInventarioController.cs" />
+      <File FileName="SumincogarBackend/Controllers/FichasTecnicaController.cs" />
+      <File FileName="SumincogarBackend/AutoMapper/AutoMapperProfiles.cs" />
+      <File FileName="SumincogarBackend/DTO/DetalleInventarioDTO/ProductoInventario.cs" />
+      <File FileName="SumincogarBackend/Models/Detalleinventario.cs" />
+      <File FileName="SumincogarBackend/Controllers/CatalogosController.cs" />
+      <File FileName="SumincogarBackend/Controllers/CategoriasController.cs" />
+      <File FileName="SumincogarBackend/Controllers/ParametrosTecnicosController.cs" />
+      <File FileName="SumincogarBackend/DTO/DetalleInventarioDTO/BuscarDetalleInventario.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="SumincogarBackend" expanded="True">
+            <Node name="SumincogarBackend" expanded="True">
+              <Node name="AutoMapper" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="ProductosController.cs" selected="True" />
+              </Node>
+              <Node name="DTO" expanded="True">
+                <Node name="DetalleInventarioDTO" expanded="True" />
+                <Node name="FichaTecnicaDTO" expanded="True" />
+                <Node name="ParametroTecnicoDTO" expanded="True" />
+                <Node name="ProductoDTO" expanded="True" />
+              </Node>
+              <Node name="Models" expanded="True" />
+              <Node name="appsettings.json" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

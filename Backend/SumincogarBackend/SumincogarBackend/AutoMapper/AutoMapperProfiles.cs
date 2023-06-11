@@ -23,7 +23,9 @@ namespace SumincogarBackend.AutoMapper
                 .ForMember(dest => dest.CategoriaName, 
                     opt => opt.MapFrom(src => src.Categoria!.CategoriaNombre))
                 .ForMember(dest => dest.DocumentoUrl,
-                    opt => opt.MapFrom(src => src.DocumentoUrl == null ? "" : src.DocumentoUrl));
+                    opt => opt.MapFrom(src => src.DocumentoUrl == null ? "" : src.DocumentoUrl))
+                .ForMember(dest => dest.Parametros,
+                    opt => opt.MapFrom(src => src.Parametrotecnico));
 
             CreateMap<CrearParametroTecnico, Parametrotecnico>();
             CreateMap<Parametrotecnico, BuscarParametroTecnico>();

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SumincogarBackend.Contexts;
+using SumincogarBackend.DTO.DetalleInventarioDTO;
+using SumincogarBackend.DTO.FichaTecnicaDTO;
 using SumincogarBackend.DTO.ProductoDTO;
 using SumincogarBackend.Models;
 using SumincogarBackend.Services.CargarArchivos;
@@ -45,6 +47,49 @@ namespace SumincogarBackend.Controllers
             if (producto == null) return NotFound();
 
             return _mapper.Map<BuscarProducto>(producto);
+        }
+
+        [HttpGet("enStock")]
+        public async Task<ActionResult<InfoGeneralProducto>> GetDetalleInventario([FromQuery] string codigo)
+        {
+            var detalleInventario = await _context.Detalleinventario
+                .Where(x => x.CodCliente == codigo).ToListAsync();
+
+            if (detalleInventario == null) return NotFound("No Existe en el Inventario");
+
+            var infoGeneralProducto = new InfoGeneralProducto();
+            infoGeneralProducto.CodCliente = detalleInventario[0].CodCliente;
+            
+            foreach(var detalle in detalleInventario)
+            {
+                var producto = await _context.Producto
+                    .Include(x => x.Imagenreferencial)
+                    .Include(x => x.FichaTecnica).ThenInclude(x => x!.Parametrotecnico)
+                    .Where(x => x.Codigo == detalle.CodProducto).FirstAsync();
+
+                if (producto == null) continue;
+
+                if (infoGeneralProducto.FichaTecnica.NombreFichaTecnica == "")
+                {
+                    infoGeneralProducto.FichaTecnica = _mapper.Map<BuscarFichaTecnica>(producto.FichaTecnica);
+                }
+
+                var productoInventario = new ProductoInventario
+                {
+                    Codigo = producto.Codigo,
+                    Colores = detalle.Colores,
+                    Impresion = detalle.Impresion,
+                    Stock = detalle.Stock,
+                    ProductoNombre = producto.ProductoNombre,
+                    ProductoId = producto.ProductoId,
+                    Imagen = producto.ImagenUrl,
+                };
+
+                infoGeneralProducto.Productos.Add(productoInventario);
+                infoGeneralProducto.Imagenes.AddRange(_mapper.Map<List<BuscarImagenRefencial>>(producto.Imagenreferencial));
+            }
+        
+            return infoGeneralProducto;
         }
 
         [HttpPut("{productoId}")]

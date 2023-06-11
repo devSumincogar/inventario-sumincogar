@@ -1,79 +1,83 @@
 {
   "Files": [
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\03b92945-a584-4597-ae3c-f2f315ae283d.jpg",
-      "PackagePath": "staticwebassets\\03b92945-a584-4597-ae3c-f2f315ae283d.jpg"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/03b92945-a584-4597-ae3c-f2f315ae283d.jpg",
+      "PackagePath": "staticwebassets/03b92945-a584-4597-ae3c-f2f315ae283d.jpg"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\2274f571-a2c1-4530-90a7-48f5267d80c0.pdf",
-      "PackagePath": "staticwebassets\\2274f571-a2c1-4530-90a7-48f5267d80c0.pdf"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/2274f571-a2c1-4530-90a7-48f5267d80c0.pdf",
+      "PackagePath": "staticwebassets/2274f571-a2c1-4530-90a7-48f5267d80c0.pdf"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\60a7ce0d-27f7-4d5a-ba61-234a82a0c6fd.jpg",
-      "PackagePath": "staticwebassets\\60a7ce0d-27f7-4d5a-ba61-234a82a0c6fd.jpg"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/60a7ce0d-27f7-4d5a-ba61-234a82a0c6fd.jpg",
+      "PackagePath": "staticwebassets/60a7ce0d-27f7-4d5a-ba61-234a82a0c6fd.jpg"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\8e3cb160-01c3-445f-bc82-d2680cd955d1.jpg",
-      "PackagePath": "staticwebassets\\8e3cb160-01c3-445f-bc82-d2680cd955d1.jpg"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/8e3cb160-01c3-445f-bc82-d2680cd955d1.jpg",
+      "PackagePath": "staticwebassets/8e3cb160-01c3-445f-bc82-d2680cd955d1.jpg"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\8f4741e1-5736-472c-a800-9e8955827638.jpg",
-      "PackagePath": "staticwebassets\\8f4741e1-5736-472c-a800-9e8955827638.jpg"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/8f4741e1-5736-472c-a800-9e8955827638.jpg",
+      "PackagePath": "staticwebassets/8f4741e1-5736-472c-a800-9e8955827638.jpg"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\catalogo\\57f64442-a0fa-4f21-a749-1453a776f088.pdf",
-      "PackagePath": "staticwebassets\\catalogo\\57f64442-a0fa-4f21-a749-1453a776f088.pdf"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/catalogo/57f64442-a0fa-4f21-a749-1453a776f088.pdf",
+      "PackagePath": "staticwebassets/catalogo/57f64442-a0fa-4f21-a749-1453a776f088.pdf"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\catalogo\\6411cf42-de77-477a-b7cd-706edc269626.jpg",
-      "PackagePath": "staticwebassets\\catalogo\\6411cf42-de77-477a-b7cd-706edc269626.jpg"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/catalogo/6411cf42-de77-477a-b7cd-706edc269626.jpg",
+      "PackagePath": "staticwebassets/catalogo/6411cf42-de77-477a-b7cd-706edc269626.jpg"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\ccdb279b-ec0e-4a91-b1a6-8ab1f5d173ee.jpg",
-      "PackagePath": "staticwebassets\\ccdb279b-ec0e-4a91-b1a6-8ab1f5d173ee.jpg"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/ccdb279b-ec0e-4a91-b1a6-8ab1f5d173ee.jpg",
+      "PackagePath": "staticwebassets/ccdb279b-ec0e-4a91-b1a6-8ab1f5d173ee.jpg"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\fichaTecnica\\6f110c02-a3ad-4316-b77a-f633f69d4fa1.pdf",
-      "PackagePath": "staticwebassets\\fichaTecnica\\6f110c02-a3ad-4316-b77a-f633f69d4fa1.pdf"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/fichaTecnica/6f110c02-a3ad-4316-b77a-f633f69d4fa1.pdf",
+      "PackagePath": "staticwebassets/fichaTecnica/6f110c02-a3ad-4316-b77a-f633f69d4fa1.pdf"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\000b6617-a213-4c66-adbf-238ed960c0ef.pdf",
-      "PackagePath": "staticwebassets\\producto\\000b6617-a213-4c66-adbf-238ed960c0ef.pdf"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/producto/000b6617-a213-4c66-adbf-238ed960c0ef.pdf",
+      "PackagePath": "staticwebassets/producto/000b6617-a213-4c66-adbf-238ed960c0ef.pdf"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\0b56578b-d50a-45ff-bf5d-4feccab885ac.png",
-      "PackagePath": "staticwebassets\\producto\\0b56578b-d50a-45ff-bf5d-4feccab885ac.png"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/producto/0b56578b-d50a-45ff-bf5d-4feccab885ac.png",
+      "PackagePath": "staticwebassets/producto/0b56578b-d50a-45ff-bf5d-4feccab885ac.png"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\4cb13065-482c-4375-a23d-b0cecec1e45e.png",
-      "PackagePath": "staticwebassets\\producto\\4cb13065-482c-4375-a23d-b0cecec1e45e.png"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/producto/4cb13065-482c-4375-a23d-b0cecec1e45e.png",
+      "PackagePath": "staticwebassets/producto/4cb13065-482c-4375-a23d-b0cecec1e45e.png"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\553f0e19-f1f5-4e32-ab53-13b74402a371.pdf",
-      "PackagePath": "staticwebassets\\producto\\553f0e19-f1f5-4e32-ab53-13b74402a371.pdf"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/producto/553f0e19-f1f5-4e32-ab53-13b74402a371.pdf",
+      "PackagePath": "staticwebassets/producto/553f0e19-f1f5-4e32-ab53-13b74402a371.pdf"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\9ad0d875-b208-4626-b8a8-5e8d49e5121c.png",
-      "PackagePath": "staticwebassets\\producto\\9ad0d875-b208-4626-b8a8-5e8d49e5121c.png"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/producto/9ad0d875-b208-4626-b8a8-5e8d49e5121c.png",
+      "PackagePath": "staticwebassets/producto/9ad0d875-b208-4626-b8a8-5e8d49e5121c.png"
     },
     {
-      "Id": "D:\\GitHub\\Sumincogar\\inventario-sumincogar\\Backend\\SumincogarBackend\\SumincogarBackend\\wwwroot\\producto\\def03e47-fa18-476b-84c1-485d96c29390.png",
-      "PackagePath": "staticwebassets\\producto\\def03e47-fa18-476b-84c1-485d96c29390.png"
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/producto/def03e47-fa18-476b-84c1-485d96c29390.png",
+      "PackagePath": "staticwebassets/producto/def03e47-fa18-476b-84c1-485d96c29390.png"
     },
     {
-      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.SumincogarBackend.Microsoft.AspNetCore.StaticWebAssets.props",
+      "Id": "/Users/alexismaldonado/Documents/inventario-sumincogar/Backend/SumincogarBackend/SumincogarBackend/wwwroot/producto/e64aa74a-8592-4e00-859f-58eb7c3b620c.png",
+      "PackagePath": "staticwebassets/producto/e64aa74a-8592-4e00-859f-58eb7c3b620c.png"
+    },
+    {
+      "Id": "obj/Release/net6.0/staticwebassets/msbuild.SumincogarBackend.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
     {
-      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.build.SumincogarBackend.props",
+      "Id": "obj/Release/net6.0/staticwebassets/msbuild.build.SumincogarBackend.props",
       "PackagePath": "build\\SumincogarBackend.props"
     },
     {
-      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.SumincogarBackend.props",
+      "Id": "obj/Release/net6.0/staticwebassets/msbuild.buildMultiTargeting.SumincogarBackend.props",
       "PackagePath": "buildMultiTargeting\\SumincogarBackend.props"
     },
     {
-      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.buildTransitive.SumincogarBackend.props",
+      "Id": "obj/Release/net6.0/staticwebassets/msbuild.buildTransitive.SumincogarBackend.props",
       "PackagePath": "buildTransitive\\SumincogarBackend.props"
     }
   ],

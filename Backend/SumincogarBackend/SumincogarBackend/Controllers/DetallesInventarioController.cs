@@ -24,13 +24,7 @@ namespace SumincogarBackend.Controllers
         {
             _context = context;
             _mapper = mapper;
-        }
-
-        //[HttpGet]
-        //public async Task<ActionResult<BuscarDetalleInventario>> GetDetalleInventario([FromQuery] string Codigo)
-        //{
-
-        //}
+        }       
 
         [HttpPost]
         public async Task<IActionResult> CargarDetallesInventario(IFormFile files)
