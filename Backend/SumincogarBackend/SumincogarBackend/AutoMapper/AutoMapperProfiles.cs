@@ -6,6 +6,7 @@ using SumincogarBackend.DTO.FichaTecnicaDTO;
 using SumincogarBackend.DTO.ParametroTecnicoDTO;
 using SumincogarBackend.DTO.ProductoDTO;
 using SumincogarBackend.DTO.PromocionDTO;
+using SumincogarBackend.DTO.UsuariosDTO;
 using SumincogarBackend.Models;
 
 namespace SumincogarBackend.AutoMapper
@@ -66,7 +67,13 @@ namespace SumincogarBackend.AutoMapper
                 opt => opt.MapFrom(src => src.Url == null ? "" : src.Url)
             );
 
-            CreateMap<Detalleinventario, BuscarDetalleInventario>();
+            CreateMap<Detalleinventario, BuscarDetalleInventario>().ForMember(
+                dest => dest.Orden,
+                opt => opt.MapFrom(src => src.Stock!.Equals("ALTO") ? 1 : src.Stock!.Equals("MEDIO") ? 2 : src.Stock!.Equals("BAJO") ? 3 : 4)
+            );
+
+            CreateMap<CrearUsuarioDTO, Usuario>();
+
         }
     }
 }

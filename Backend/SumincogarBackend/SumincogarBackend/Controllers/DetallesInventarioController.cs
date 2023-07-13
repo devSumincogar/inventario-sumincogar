@@ -40,19 +40,22 @@ namespace SumincogarBackend.Controllers
                 string[] datos = content.Split("\n");
                
                 foreach (var item in datos)
-                {                    
+                {   
                     if (!string.IsNullOrEmpty(item))
                     {
                         var cells = item.Split(",");
-                        
+
+                        if (cells[0].TrimStart('\uFEFF').Equals("COD_CLIENTE")) continue;
+
                         var detalle = new Detalleinventario
                         {
-                            CodCliente = cells[0],
-                            CodProducto = cells[1],
-                            Stock = cells[2],
-                            Impresion = cells[3],
-                            Colores = cells[4],                            
-                        };
+                            CodCliente = cells[0].TrimStart('\uFEFF').Trim(),
+                            CodProducto = cells[1].Trim(),
+                            Stock = cells[2].Trim(),
+                            Impresion = cells[3].Trim(),
+                            Descontinuada = cells[4].Trim().Equals("SI") ? true : false,
+                            TelasSimilares = cells[5].Replace("\r", "")
+                    };
 
                         detalles.Add(detalle);
                     }

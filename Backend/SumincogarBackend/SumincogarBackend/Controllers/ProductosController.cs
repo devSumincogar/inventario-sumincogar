@@ -33,7 +33,6 @@ namespace SumincogarBackend.Controllers
         {
             var productos = await _context.Producto
                 .Include(x => x.Imagenreferencial)
-                .Where(x => x.FichaTecnicaId == fichaTecnicaId || fichaTecnicaId == null)
                 .ToListAsync();
 
             return _mapper.Map<List<BuscarProducto>>(productos);
@@ -64,15 +63,9 @@ namespace SumincogarBackend.Controllers
             {
                 var producto = await _context.Producto
                     .Include(x => x.Imagenreferencial)
-                    .Include(x => x.FichaTecnica).ThenInclude(x => x!.Parametrotecnico)
                     .Where(x => x.Codigo == detalle.CodProducto).FirstAsync();
 
                 if (producto == null) continue;
-
-                if (infoGeneralProducto.FichaTecnica.NombreFichaTecnica == "")
-                {
-                    infoGeneralProducto.FichaTecnica = _mapper.Map<BuscarFichaTecnica>(producto.FichaTecnica);
-                }
 
                 var productoInventario = new ProductoInventario
                 {
@@ -83,11 +76,14 @@ namespace SumincogarBackend.Controllers
                     ProductoNombre = producto.ProductoNombre,
                     ProductoId = producto.ProductoId,
                     Imagen = producto.ImagenUrl,
+                    Orden = detalle.Stock!.Equals("ALTO") ? 1 : detalle.Stock!.Equals("MEDIO") ? 2 : detalle.Stock!.Equals("BAJO") ? 3 : 4
                 };
 
                 infoGeneralProducto.Productos.Add(productoInventario);
                 infoGeneralProducto.Imagenes.AddRange(_mapper.Map<List<BuscarImagenRefencial>>(producto.Imagenreferencial));
             }
+
+            infoGeneralProducto.Productos = infoGeneralProducto.Productos.OrderBy(x => x.Orden).ToList();
         
             return infoGeneralProducto;
         }

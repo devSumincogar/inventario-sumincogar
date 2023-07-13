@@ -23,8 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Context\" />
     <Folder Include="wwwroot\" />
+    <Content Remove="appsettings.Development.json" />
+    <None Include="appsettings.Development.json" />
+    <Content Remove="appsettings.json" />
+    <None Include="appsettings.json" />
   </ItemGroup>
 
 </Project>

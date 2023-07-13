@@ -11,5 +11,7 @@ namespace SumincogarBackend.Models
         public string? Stock { get; set; }
         public string? Impresion { get; set; }
         public string? Colores { get; set; }
+        public bool? Descontinuada { get; set; }
+        public string TelasSimilares { get; set; } = null!;
     }
 }

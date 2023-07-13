@@ -10,6 +10,7 @@ namespace SumincogarBackend.DTO.DetalleInventarioDTO
         public string Codigo { get; set; } = null!;
         public string ProductoNombre { get; set; } = null!;                   
         public string? Stock { get; set; }
+        public int Orden { get; set; }
         public string? Impresion { get; set; }
         public string? Colores { get; set; }
         public string? Imagen { get; set; }

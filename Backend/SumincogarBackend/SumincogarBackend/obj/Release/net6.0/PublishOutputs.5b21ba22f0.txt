@@ -1,6 +1,4 @@
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.exe
-D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
-D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\appsettings.json
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.runtimeconfig.json
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.pdb

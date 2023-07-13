@@ -8,7 +8,6 @@ namespace SumincogarBackend.Models
         public Fichatecnica()
         {
             Parametrotecnico = new HashSet<Parametrotecnico>();
-            Producto = new HashSet<Producto>();
         }
 
         public int FichaTecnicaId { get; set; }
@@ -18,6 +17,5 @@ namespace SumincogarBackend.Models
 
         public virtual Categoria? Categoria { get; set; }
         public virtual ICollection<Parametrotecnico> Parametrotecnico { get; set; }
-        public virtual ICollection<Producto> Producto { get; set; }
     }
 }
