@@ -25,7 +25,7 @@ namespace SumincogarBackend.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{categoriaId}")]
+        [HttpGet("PorCategoria/{categoriaId}")]
         public async Task<ActionResult<IEnumerable<BuscarSubCategoria>>> GetSubCategoria(int categoriaId)
         {
             var subCategorias = await _context.SubCategoria.Where(x => x.CategoriaId == categoriaId).ToListAsync();

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SumincogarBackend.Models;
 
 namespace SumincogarBackend.Contexts
 {
-    public partial class db_a977c3_sumincogarContext : DbContext
+    public partial class db_a977c3_sumincogarContext : IdentityDbContext
     {
         public db_a977c3_sumincogarContext()
         {
@@ -38,6 +39,9 @@ namespace SumincogarBackend.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+
             modelBuilder.Entity<Catalogo>(entity =>
             {
                 entity.ToTable("CATALOGO");

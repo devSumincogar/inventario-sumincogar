@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SumincogarBackend.Contexts;
-using SumincogarBackend.DTO.CategoriaDTO;
+using SumincogarBackend.DTO.GamaColorDTO;
 using SumincogarBackend.Models;
 
 namespace SumincogarBackend.Controllers
@@ -25,36 +25,36 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BuscarCategoria>>> GetCategoria()
+        public async Task<ActionResult<IEnumerable<BuscarGamaColor>>> GetGamaColor()
         {
-            var categorias = await _context.Categoria.ToListAsync();
-            return _mapper.Map<List<BuscarCategoria>>(categorias);
+            var GamaColors = await _context.GamaColor.ToListAsync();
+            return _mapper.Map<List<BuscarGamaColor>>(GamaColors);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<BuscarCategoria>> GetCategorium(int id)
+        public async Task<ActionResult<BuscarGamaColor>> GetCategorium(int id)
         {
-            var categoria = await _context.Categoria.FindAsync(id);
+            var GamaColor = await _context.GamaColor.FindAsync(id);
 
-            if (categoria == null)
+            if (GamaColor == null)
             {
                 return NotFound();
             }
 
-            return _mapper.Map<BuscarCategoria>(categoria);
+            return _mapper.Map<BuscarGamaColor>(GamaColor);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BuscarCategoria>> PutCategorium(int id, CrearCategoria crearCategoria)
+        public async Task<ActionResult<BuscarGamaColor>> PutCategorium(int id, CrearGamaColor crearGamaColor)
         {
-            if (await ExistName(crearCategoria.Categorianombre)) return BadRequest($"Ya existe la categoría {crearCategoria.Categorianombre}");
+            if (await ExistName(crearGamaColor.GamaColorNombre!)) return BadRequest($"Ya existe la categoría {crearGamaColor.GamaColorNombre}");
 
-            var categoria = await _context.Categoria.FindAsync(id);
-            categoria = _mapper.Map(crearCategoria, categoria);
+            var GamaColor = await _context.GamaColor.FindAsync(id);
+            GamaColor = _mapper.Map(crearGamaColor, GamaColor);
 
             try
             {
-                _context.Entry(categoria!).State = EntityState.Modified;
+                _context.Entry(GamaColor!).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -62,25 +62,25 @@ namespace SumincogarBackend.Controllers
                 return BadRequest();
             }
 
-            return _mapper.Map<BuscarCategoria>(categoria);
+            return _mapper.Map<BuscarGamaColor>(GamaColor);
         }
 
         [HttpPost]
-        public async Task<ActionResult<BuscarCategoria>> PostCategorium(CrearCategoria crearCategoria)
+        public async Task<ActionResult<BuscarGamaColor>> PostCategorium(CrearGamaColor crearGamaColor)
         {
-            if (await ExistName(crearCategoria.Categorianombre)) return BadRequest($"Ya existe la categoría {crearCategoria.Categorianombre}");
+            if (await ExistName(crearGamaColor.GamaColorNombre!)) return BadRequest($"Ya existe la categoría {crearGamaColor.GamaColorNombre}");
 
-            var categoria = _mapper.Map<Categoria>(crearCategoria);
+            var GamaColor = _mapper.Map<GamaColor>(crearGamaColor);
 
-            _context.Categoria.Add(categoria);
+            _context.GamaColor.Add(GamaColor);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<BuscarCategoria>(categoria);
+            return _mapper.Map<BuscarGamaColor>(GamaColor);
         }
 
         private async Task<bool> ExistName(string name)
         {
-            return await _context.Categoria.AnyAsync(x => x.CategoriaNombre.Equals(name));
+            return await _context.GamaColor.AnyAsync(x => x.GamaColorNombre!.Equals(name));
         }
     }
 }

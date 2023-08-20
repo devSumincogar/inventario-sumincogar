@@ -3,9 +3,11 @@ using SumincogarBackend.DTO.CatalogoDTO;
 using SumincogarBackend.DTO.CategoriaDTO;
 using SumincogarBackend.DTO.DetalleInventarioDTO;
 using SumincogarBackend.DTO.FichaTecnicaDTO;
+using SumincogarBackend.DTO.GamaColorDTO;
 using SumincogarBackend.DTO.ParametroTecnicoDTO;
 using SumincogarBackend.DTO.ProductoDTO;
 using SumincogarBackend.DTO.PromocionDTO;
+using SumincogarBackend.DTO.SubCategoriaDTO;
 using SumincogarBackend.DTO.UsuariosDTO;
 using SumincogarBackend.Models;
 
@@ -17,6 +19,12 @@ namespace SumincogarBackend.AutoMapper
         {
             CreateMap<CrearCategoria, Categoria>();
             CreateMap<Categoria, BuscarCategoria>();
+
+            CreateMap<CrearSubCategoria, SubCategoria>();
+            CreateMap<SubCategoria, BuscarSubCategoria>();
+
+            CreateMap<CrearGamaColor, GamaColor>();
+            CreateMap<GamaColor, BuscarGamaColor>();
 
             CreateMap<CrearFichaTecnica, Fichatecnica>()
                 .ForMember(x => x.DocumentoUrl, options => options.Ignore());

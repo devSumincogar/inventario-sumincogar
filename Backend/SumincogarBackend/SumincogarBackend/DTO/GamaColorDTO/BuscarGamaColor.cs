@@ -1,7 +1,8 @@
 ﻿namespace SumincogarBackend.DTO.GamaColorDTO
 {
-    public class CrearGamaColor
+    public class BuscarGamaColor
     {
+        public int GamaColorId { get; set; }
         public string? GamaColorNombre { get; set; }
     }
 }
