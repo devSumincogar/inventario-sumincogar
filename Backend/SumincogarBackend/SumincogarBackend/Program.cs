@@ -8,6 +8,8 @@ using SumincogarBackend.Contexts;
 using SumincogarBackend.DTO.UsuariosDTO;
 using SumincogarBackend.Services.AlmacenadorArchivos;
 using SumincogarBackend.Services.CargarArchivos;
+using SumincogarBackend.Services.EnviarEmails;
+using SumincogarBackend.Services.GeneradorStrings;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -94,6 +96,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 
 builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivos>();
 builder.Services.AddTransient<ICargarArchivos, CargarArchivos>();
+builder.Services.AddTransient<IEnviarEmail, EnviarEmail>();
+builder.Services.AddTransient<IGeneradorStrings, GeneradorStrings>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();

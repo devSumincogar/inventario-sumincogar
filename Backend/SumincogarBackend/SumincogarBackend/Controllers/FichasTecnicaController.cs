@@ -32,19 +32,19 @@ namespace SumincogarBackend.Controllers
             _cargarArchivos = cargarArchivos;
         }
 
-        [HttpGet("categoria/{categoriaId}")]
-        public async Task<ActionResult<IEnumerable<BuscarFichaTecnica>>> GetFichatecnicaXCategoria(int categoriaId)
+        [HttpGet("subCategoria/{subcategoriaId}")]
+        public async Task<ActionResult<IEnumerable<BuscarFichaTecnica>>> GetFichatecnicaXCategoria(int subcategoriaId)
         {
-            var fichasTecnicas = await _context.Fichatecnica.Include(x => x.Categoria)
+            var fichasTecnicas = await _context.Fichatecnica.Include(x => x.Subcategoria)
                 .Include(x => x.Parametrotecnico)
-                .Where(x => x.CategoriaId == categoriaId).ToListAsync();
+                .Where(x => x.SubcategoriaId == subcategoriaId).ToListAsync();
             return _mapper.Map<List<BuscarFichaTecnica>>(fichasTecnicas);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<BuscarFichaTecnica>> GetFichatecnica(int id)
         {
-            var fichatecnica = await _context.Fichatecnica.Include(x => x.Categoria)
+            var fichatecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
                 .Include(x => x.Parametrotecnico)
                 .FirstOrDefaultAsync(x => x.FichaTecnicaId == id);
 
@@ -72,7 +72,7 @@ namespace SumincogarBackend.Controllers
                 return BadRequest();
             }
 
-            fichaTecnica = await _context.Fichatecnica.Include(x => x.Categoria)
+            fichaTecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
                 .Include(x => x.Parametrotecnico)
                 .FirstOrDefaultAsync(x => x.FichaTecnicaId == id);
 
@@ -92,7 +92,7 @@ namespace SumincogarBackend.Controllers
             _context.Fichatecnica.Add(fichaTecnica);
             await _context.SaveChangesAsync();
 
-            fichaTecnica = await _context.Fichatecnica.Include(x => x.Categoria)
+            fichaTecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
                 .Include(x => x.Parametrotecnico)
                 .FirstOrDefaultAsync(x => x.FichaTecnicaId == fichaTecnica.FichaTecnicaId);
 

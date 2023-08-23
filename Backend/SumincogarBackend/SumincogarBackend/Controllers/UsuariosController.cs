@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,8 @@ using SumincogarBackend.DTO.ProductoDTO;
 using SumincogarBackend.DTO.UsuariosDTO;
 using SumincogarBackend.Models;
 using SumincogarBackend.Services.CargarArchivos;
+using SumincogarBackend.Services.EnviarEmails;
+using SumincogarBackend.Services.GeneradorStrings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -17,21 +21,25 @@ using System.Text;
 namespace SumincogarBackend.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class UsuariosController : ControllerBase
     {
         private readonly db_a977c3_sumincogarContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IConfiguration _configuration;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
+        private readonly IGeneradorStrings _generadorStrings;
+        private readonly IEnviarEmail _enviarEmail;
 
-        public UsuariosController(db_a977c3_sumincogarContext context, UserManager<IdentityUser> userManager, IConfiguration configuration, SignInManager<IdentityUser> signInManager)
+        public UsuariosController(db_a977c3_sumincogarContext context, UserManager<IdentityUser> userManager, IConfiguration configuration, SignInManager<IdentityUser> signInManager, IGeneradorStrings generadorStrings, IEnviarEmail enviarEmail)
         {
             _context = context;
             _userManager = userManager;
             _configuration = configuration;
             _signInManager = signInManager;
+            _generadorStrings = generadorStrings;
+            _enviarEmail = enviarEmail;
         }
 
         [HttpPost("registrar")]
@@ -69,6 +77,7 @@ namespace SumincogarBackend.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<RespuestaLogin>> Login(CredencialesUsuario credencialesUsuario)
         {
@@ -108,6 +117,77 @@ namespace SumincogarBackend.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
+        [HttpPut("recuperarContrasenia")]
+        public async Task<IActionResult> PutRecuperarContrasenia([FromBody] UpdateUsuario cambiarContraseniaUsuario)
+        {
+            var identityUser = await _userManager.FindByEmailAsync(cambiarContraseniaUsuario.Email);
+
+            if (identityUser == null) return BadRequest();
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+
+            var newPassword = _generadorStrings.GenerateRandomString(6);
+            var resultado = await _userManager.ResetPasswordAsync(identityUser, token, newPassword);
+
+            if (resultado.Succeeded)
+            {
+                var usuario = await _context.Usuario.Where(x => x.UsuarioId.Equals(identityUser.Id)).FirstOrDefaultAsync();
+                usuario!.ResetPassword = true;
+
+                try
+                {
+                    _context.Entry(usuario!).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                    string body = $"La nueva contraseña para ingresar es: {newPassword}. Al ingresar al app se le solicitará cambiar por una nueva contraseña";
+
+                    var isEmailConfirmed = _enviarEmail.SendEmail(cambiarContraseniaUsuario.Email, "Nueva Contraseña App Sumincogar", body);
+                    return isEmailConfirmed ? Ok() : BadRequest();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return BadRequest();
+                }                
+            }
+            else
+            {
+                return BadRequest(resultado.Errors);
+            }
+        }
+
+        
+        [HttpPut("cambiarContrasenia")]
+        public async Task<IActionResult> PutCambiarContrasenia([FromBody] CambiarContraseniaDTO cambiarContraseniaUsuario)
+        {
+            var identityUser = await _userManager.FindByEmailAsync(cambiarContraseniaUsuario.Email);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+
+            var resultado = await _userManager.ResetPasswordAsync(identityUser, token, cambiarContraseniaUsuario.NewPassword);
+
+            if (resultado.Succeeded)
+            {
+                var usuario = await _context.Usuario.Where(x => x.UsuarioId.Equals(identityUser.Id)).FirstOrDefaultAsync();
+                usuario!.ResetPassword = false;
+
+                try
+                {
+                    _context.Entry(usuario!).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                    return Ok();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                return BadRequest(resultado.Errors);
+            }
+        }
+
         private async Task<RespuestaLogin> ConstruirToken(CredencialesUsuario credencialesUsuario)
         {
             var user = await _userManager.FindByEmailAsync(credencialesUsuario.Email);
@@ -131,7 +211,8 @@ namespace SumincogarBackend.Controllers
             return new RespuestaLogin
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(securityToken),
-                Expiracion = expiracion
+                Expiracion = expiracion,
+                ResetPassword = usuario.ResetPassword
             };
         }
         

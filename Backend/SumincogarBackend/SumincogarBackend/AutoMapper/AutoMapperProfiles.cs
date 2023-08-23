@@ -29,8 +29,8 @@ namespace SumincogarBackend.AutoMapper
             CreateMap<CrearFichaTecnica, Fichatecnica>()
                 .ForMember(x => x.DocumentoUrl, options => options.Ignore());
             CreateMap<Fichatecnica, BuscarFichaTecnica>()
-                .ForMember(dest => dest.CategoriaName, 
-                    opt => opt.MapFrom(src => src.Categoria!.CategoriaNombre))
+                .ForMember(dest => dest.SubCategoriaName, 
+                    opt => opt.MapFrom(src => src.Subcategoria!.SubcategoriaNombre))
                 .ForMember(dest => dest.DocumentoUrl,
                     opt => opt.MapFrom(src => src.DocumentoUrl == null ? "" : src.DocumentoUrl))
                 .ForMember(dest => dest.Parametros,

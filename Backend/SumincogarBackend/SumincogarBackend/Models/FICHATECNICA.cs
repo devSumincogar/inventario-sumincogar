@@ -11,11 +11,11 @@ namespace SumincogarBackend.Models
         }
 
         public int FichaTecnicaId { get; set; }
-        public int? CategoriaId { get; set; }
         public string? DocumentoUrl { get; set; }
         public string NombreFichaTecnica { get; set; } = null!;
+        public int? SubcategoriaId { get; set; }
 
-        public virtual Categoria? Categoria { get; set; }
+        public virtual SubCategoria? Subcategoria { get; set; }
         public virtual ICollection<Parametrotecnico> Parametrotecnico { get; set; }
     }
 }

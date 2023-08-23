@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SumincogarBackend.Models;
 
 namespace SumincogarBackend.Contexts
 {
-    public partial class db_a977c3_sumincogarContext : IdentityDbContext
+    public partial class db_a977c3_sumincogarContext : DbContext
     {
         public db_a977c3_sumincogarContext()
         {
@@ -39,9 +38,6 @@ namespace SumincogarBackend.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-
             modelBuilder.Entity<Catalogo>(entity =>
             {
                 entity.ToTable("CATALOGO");
@@ -114,11 +110,7 @@ namespace SumincogarBackend.Contexts
             {
                 entity.ToTable("FICHATECNICA");
 
-                entity.HasIndex(e => e.CategoriaId, "RELATIONSHIP_3_FK");
-
                 entity.Property(e => e.FichaTecnicaId).HasColumnName("FICHA_TECNICA_ID");
-
-                entity.Property(e => e.CategoriaId).HasColumnName("CATEGORIA_ID");
 
                 entity.Property(e => e.DocumentoUrl)
                     .IsUnicode(false)
@@ -128,10 +120,12 @@ namespace SumincogarBackend.Contexts
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE_FICHA_TECNICA");
 
-                entity.HasOne(d => d.Categoria)
+                entity.Property(e => e.SubcategoriaId).HasColumnName("SUBCATEGORIA_ID");
+
+                entity.HasOne(d => d.Subcategoria)
                     .WithMany(p => p.Fichatecnica)
-                    .HasForeignKey(d => d.CategoriaId)
-                    .HasConstraintName("FK_FICHATEC_RELATIONS_CATEGORI");
+                    .HasForeignKey(d => d.SubcategoriaId)
+                    .HasConstraintName("FK__FICHATECN__SUBCA__3587F3E0");
             });
 
             modelBuilder.Entity<GamaColor>(entity =>
@@ -310,6 +304,8 @@ namespace SumincogarBackend.Contexts
                     .HasMaxLength(500)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE");
+
+                entity.Property(e => e.ResetPassword).HasColumnName("RESET_PASSWORD");
 
                 entity.Property(e => e.Tutorial).HasColumnName("TUTORIAL");
             });
