@@ -112,7 +112,7 @@ namespace SumincogarBackend.Controllers
             foreach(var detalle in detalleInventario)
             {
                 var producto = await _context.Producto
-                    .Include(x => x.Imagenreferencial)
+                    //.Include(x => x.Imagenreferencial)
                     .Include(x => x.Subcategoria)
                     .Where(x => x.Codigo == detalle.CodProducto).FirstAsync();
 
@@ -133,7 +133,7 @@ namespace SumincogarBackend.Controllers
                 };
 
                 infoGeneralProducto.Productos.Add(productoInventario);
-                infoGeneralProducto.Imagenes.AddRange(_mapper.Map<List<BuscarImagenRefencial>>(producto.Imagenreferencial));
+                //infoGeneralProducto.Imagenes.AddRange(_mapper.Map<List<BuscarImagenRefencial>>(producto.Imagenreferencial));
             }
 
             infoGeneralProducto.Productos = infoGeneralProducto.Productos.OrderBy(x => x.Orden).ToList();
