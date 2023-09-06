@@ -171,6 +171,28 @@ namespace SumincogarBackend.Controllers
             return _mapper.Map<BuscarProducto>(producto);
         }
 
+        [HttpPut("agregarImagen")]
+        public async Task<ActionResult<BuscarProducto>> PutAgregarImagenProducto([FromForm] UpdateImgProducto updateImg)
+        {
+            var producto = await _context.Producto.Where(x => x.Codigo.Equals(updateImg.Codigo)).FirstOrDefaultAsync();
+
+            if(producto == null) return  BadRequest("Crear Producto");
+
+            producto!.ImagenUrl = await _cargarArchivos.ActualizarArchivo(TiposArchivo.ImagenProducto, updateImg.ImagenUrl!, producto.ImagenUrl!);
+            
+            try
+            {
+                _context.Entry(producto!).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
+
+            return _mapper.Map<BuscarProducto>(producto);
+        }
+
         [HttpPost]
         public async Task<ActionResult<BuscarProducto>> PostProducto([FromForm] CrearProducto crearProducto)
         {

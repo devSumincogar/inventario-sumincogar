@@ -82,6 +82,43 @@ namespace SumincogarBackend.Controllers
             return _mapper.Map<BuscarCategoria>(categoria);
         }
 
+        [HttpDelete("id")]
+        public async Task<IActionResult> DeleteCategorium(int id)
+        {
+            var productos = await _context.Producto.Include(x => x.SubcategoriaId)
+                .Where(x => x.Subcategoria!.CategoriaId == id).ToListAsync();
+
+            if (productos.Any())
+            {
+                productos.ForEach(x => x.SubcategoriaId = null);
+                await _context.SaveChangesAsync();
+            }
+
+            var fichasTecnica = await _context.Fichatecnica.Include(x => x.SubcategoriaId)
+                .Where(x => x.Subcategoria!.CategoriaId == id).ToListAsync();
+
+            if (fichasTecnica.Any())
+            {
+                fichasTecnica.ForEach(x => x.SubcategoriaId = null);
+                await _context.SaveChangesAsync();
+            }
+
+            var subCategorias = await _context.SubCategoria.Where(x => x.CategoriaId == id).ToListAsync();
+
+            if (subCategorias.Any())
+            {
+                _context.RemoveRange(subCategorias);
+                await _context.SaveChangesAsync();
+            }
+
+            var categoria = await _context.Categoria.FindAsync(id);
+
+            _context.Categoria.Remove(categoria!);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         private async Task<bool> ExistName(string name)
         {
             return await _context.Categoria.AnyAsync(x => x.CategoriaNombre.Equals(name));
