@@ -31,7 +31,7 @@ namespace SumincogarBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BuscarCategoria>>> GetCategoria()
         {
-            var categorias = await _context.Categoria.ToListAsync();
+            var categorias = await _context.Categoria.OrderBy(x => x.CategoriaNombre).ToListAsync();
             return _mapper.Map<List<BuscarCategoria>>(categorias);
         }
 
@@ -82,10 +82,10 @@ namespace SumincogarBackend.Controllers
             return _mapper.Map<BuscarCategoria>(categoria);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategorium(int id)
         {
-            var productos = await _context.Producto.Include(x => x.SubcategoriaId)
+            var productos = await _context.Producto.Include(x => x.Subcategoria)
                 .Where(x => x.Subcategoria!.CategoriaId == id).ToListAsync();
 
             if (productos.Any())
@@ -94,7 +94,7 @@ namespace SumincogarBackend.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            var fichasTecnica = await _context.Fichatecnica.Include(x => x.SubcategoriaId)
+            var fichasTecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
                 .Where(x => x.Subcategoria!.CategoriaId == id).ToListAsync();
 
             if (fichasTecnica.Any())

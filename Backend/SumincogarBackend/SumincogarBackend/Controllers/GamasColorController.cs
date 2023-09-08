@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SumincogarBackend.Contexts;
 using SumincogarBackend.DTO.GamaColorDTO;
+using SumincogarBackend.DTO.SubCategoriaDTO;
 using SumincogarBackend.Models;
 
 namespace SumincogarBackend.Controllers
@@ -27,7 +28,7 @@ namespace SumincogarBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BuscarGamaColor>>> GetGamaColor()
         {
-            var GamaColors = await _context.GamaColor.ToListAsync();
+            var GamaColors = await _context.GamaColor.OrderBy(x => x.GamaColorNombre).ToListAsync();
             return _mapper.Map<List<BuscarGamaColor>>(GamaColors);
         }
 
@@ -76,6 +77,26 @@ namespace SumincogarBackend.Controllers
             await _context.SaveChangesAsync();
 
             return _mapper.Map<BuscarGamaColor>(GamaColor);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<BuscarSubCategoria>> DeleteGamaColor(int id)
+        {
+            var productosGamaColor = await _context.ProductoGamacolor
+                .Where(x => x.GamaColorId! == id).ToListAsync();
+
+            if (productosGamaColor.Any())
+            {
+                _context.ProductoGamacolor.RemoveRange(productosGamaColor);
+                await _context.SaveChangesAsync();
+            }
+
+            var gamaColor = await _context.GamaColor.FindAsync(id);
+
+            _context.GamaColor.Remove(gamaColor!);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         private async Task<bool> ExistName(string name)

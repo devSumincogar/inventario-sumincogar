@@ -28,7 +28,9 @@ namespace SumincogarBackend.Controllers
         [HttpGet("PorCategoria/{categoriaId}")]
         public async Task<ActionResult<IEnumerable<BuscarSubCategoria>>> GetSubCategoria(int categoriaId)
         {
-            var subCategorias = await _context.SubCategoria.Where(x => x.CategoriaId == categoriaId).ToListAsync();
+            var subCategorias = await _context.SubCategoria.Where(x => x.CategoriaId == categoriaId)
+                .OrderBy(x => x.SubcategoriaNombre)
+                .ToListAsync();
             return _mapper.Map<List<BuscarSubCategoria>>(subCategorias);
         }
 
@@ -77,6 +79,35 @@ namespace SumincogarBackend.Controllers
             await _context.SaveChangesAsync();
 
             return _mapper.Map<BuscarSubCategoria>(subCategoria);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<BuscarSubCategoria>> DeleteCategorium(int id)
+        {
+            var productos = await _context.Producto
+                .Where(x => x.SubcategoriaId! == id).ToListAsync();
+
+            if (productos.Any())
+            {
+                productos.ForEach(x => x.SubcategoriaId = null);
+                await _context.SaveChangesAsync();
+            }
+
+            var fichasTecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
+                .Where(x => x.Subcategoria!.CategoriaId == id).ToListAsync();
+
+            if (fichasTecnica.Any())
+            {
+                fichasTecnica.ForEach(x => x.SubcategoriaId = null);
+                await _context.SaveChangesAsync();
+            }
+
+            var subcategoria = await _context.SubCategoria.FindAsync(id);
+
+            _context.SubCategoria.Remove(subcategoria!);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         private async Task<bool> ExistName(string name)

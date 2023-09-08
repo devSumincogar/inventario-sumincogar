@@ -1,6 +1,4 @@
 /Users/alexismaldonado/Documents/PublishSumincogar/SumincogarBackend
-/Users/alexismaldonado/Documents/PublishSumincogar/appsettings.Development.json
-/Users/alexismaldonado/Documents/PublishSumincogar/appsettings.json
 /Users/alexismaldonado/Documents/PublishSumincogar/SumincogarBackend.dll
 /Users/alexismaldonado/Documents/PublishSumincogar/SumincogarBackend.runtimeconfig.json
 /Users/alexismaldonado/Documents/PublishSumincogar/SumincogarBackend.pdb
