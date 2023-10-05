@@ -43,6 +43,8 @@ namespace SumincogarBackend.Controllers
 
             var productos = await _context.Producto
                 .Include(x => x.Imagenreferencial)
+                .Include(x => x.Subcategoria)
+                .Include(x => x.ProductoGamacolor).ThenInclude(x => x.GamaColor)
                 .Where(x => x.SubcategoriaId == subCategoriaId || subCategoriaId == null)
                 .Where(x => productosGamaColor.Contains(x.ProductoId) || productosGamaColor == null)
                 .ToListAsync();
@@ -50,10 +52,15 @@ namespace SumincogarBackend.Controllers
             return _mapper.Map<List<BuscarProducto>>(productos);
         }
 
-        [HttpGet("{productoId}")]
-        public async Task<ActionResult<BuscarProducto>> GetProducto(int productoId)
+        [HttpGet("info/{codigo}")]
+        public async Task<ActionResult<BuscarProducto>> GetProducto(string codigo)
         {
-            var producto = await _context.Producto.Include(x => x.Imagenreferencial).FirstOrDefaultAsync(x => x.ProductoId == productoId);
+            var producto = await _context.Producto
+                .Include(x => x.Imagenreferencial)
+                .Include(x => x.Subcategoria)
+                .Include(x => x.ProductoGamacolor).ThenInclude(x => x.GamaColor)
+                .FirstOrDefaultAsync(x => x.Codigo.Equals(codigo)
+            );
 
             if (producto == null) return NotFound();
 
@@ -146,7 +153,7 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpPut("{productoId}")]
-        public async Task<ActionResult<BuscarProducto>> PutProducto(int productoId, [FromForm] CrearProducto crearProducto)
+        public async Task<IActionResult> PutProducto(int productoId, [FromForm] CrearProducto crearProducto)
         {            
             var producto = await _context.Producto.FindAsync(productoId);
             producto = _mapper.Map(crearProducto, producto);
@@ -168,11 +175,11 @@ namespace SumincogarBackend.Controllers
 
             producto = await _context.Producto.FirstOrDefaultAsync(x => x.ProductoId == productoId);
 
-            return _mapper.Map<BuscarProducto>(producto);
+            return Ok();
         }
 
         [HttpPut("agregarImagen")]
-        public async Task<ActionResult<BuscarProducto>> PutAgregarImagenProducto([FromForm] UpdateImgProducto updateImg)
+        public async Task<IActionResult> PutAgregarImagenProducto([FromForm] UpdateImgProducto updateImg)
         {
             var producto = await _context.Producto.Where(x => x.Codigo.Equals(updateImg.Codigo)).FirstOrDefaultAsync();
 
@@ -190,11 +197,11 @@ namespace SumincogarBackend.Controllers
                 return BadRequest();
             }
 
-            return _mapper.Map<BuscarProducto>(producto);
+            return Ok();
         }
 
         [HttpPost]
-        public async Task<ActionResult<BuscarProducto>> PostProducto([FromForm] CrearProducto crearProducto)
+        public async Task<IActionResult> PostProducto([FromForm] CrearProducto crearProducto)
         {
             if (await ExistNameOrCode(crearProducto)) return BadRequest($"Ya existe el producto con nombre {crearProducto.ProductoNombre} o código {crearProducto.Codigo}");
 
@@ -211,7 +218,7 @@ namespace SumincogarBackend.Controllers
             producto = await _context.Producto
                 .FirstOrDefaultAsync(x => x.ProductoId == producto.ProductoId);
 
-            return _mapper.Map<BuscarProducto>(producto);
+            return Ok();
         }
 
         [HttpPost("imagenReferencial")]

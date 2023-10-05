@@ -7,5 +7,9 @@ namespace SumincogarBackend.Models
     {
         public int ProductoId { get; set; }
         public int GamaColorId { get; set; }
+        public int ProductoGamacolorId { get; set; }
+
+        public virtual GamaColor GamaColor { get; set; } = null!;
+        public virtual Producto Producto { get; set; } = null!;
     }
 }

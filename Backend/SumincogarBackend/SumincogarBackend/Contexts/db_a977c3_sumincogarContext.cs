@@ -34,13 +34,11 @@ namespace SumincogarBackend.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<Catalogo>(entity =>
             {
                 entity.ToTable("CATALOGO");
@@ -216,14 +214,25 @@ namespace SumincogarBackend.Contexts
 
             modelBuilder.Entity<ProductoGamacolor>(entity =>
             {
-                entity.HasKey(e => new { e.ProductoId, e.GamaColorId })
-                    .HasName("PK__PRODUCTO__27242E4706208E83");
-
                 entity.ToTable("PRODUCTO_GAMACOLOR");
+
+                entity.Property(e => e.ProductoGamacolorId).HasColumnName("PRODUCTO_GAMACOLOR_ID");
+
+                entity.Property(e => e.GamaColorId).HasColumnName("GAMA_COLOR_ID");
 
                 entity.Property(e => e.ProductoId).HasColumnName("PRODUCTO_ID");
 
-                entity.Property(e => e.GamaColorId).HasColumnName("GAMA_COLOR_ID");
+                entity.HasOne(d => d.GamaColor)
+                    .WithMany(p => p.ProductoGamacolor)
+                    .HasForeignKey(d => d.GamaColorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__PRODUCTO___GAMA___37703C52");
+
+                entity.HasOne(d => d.Producto)
+                    .WithMany(p => p.ProductoGamacolor)
+                    .HasForeignKey(d => d.ProductoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__PRODUCTO___PRODU__367C1819");
             });
 
             modelBuilder.Entity<Promocion>(entity =>

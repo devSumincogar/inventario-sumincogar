@@ -66,8 +66,12 @@ namespace SumincogarBackend.AutoMapper
             CreateMap<Producto, BuscarProducto>().ForMember(
                 dest => dest.ImagenUrl,
                 opt => opt.MapFrom(src => src.ImagenUrl == null ? "" : src.ImagenUrl)
+            ).ForMember(dest => dest.CategoriaId,
+                    opt => opt.MapFrom(src => src.Subcategoria.CategoriaId)
             ).ForMember(dest => dest.Imagenes,
-                    opt => opt.MapFrom(src => src.Imagenreferencial));
+                    opt => opt.MapFrom(src => src.Imagenreferencial)
+            ).ForMember(dest => dest.GamasColor,
+                    opt => opt.MapFrom(src => src.ProductoGamacolor.Select(x => x.GamaColor).ToList()));
             CreateMap<CrearImagenReferencial, Imagenreferencial>()
                 .ForMember(x => x.Url, options => options.Ignore());
             CreateMap<Imagenreferencial, BuscarImagenRefencial>().ForMember(
