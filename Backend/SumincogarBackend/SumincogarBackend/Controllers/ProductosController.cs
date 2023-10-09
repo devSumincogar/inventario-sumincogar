@@ -158,11 +158,6 @@ namespace SumincogarBackend.Controllers
             var producto = await _context.Producto.FindAsync(productoId);
             producto = _mapper.Map(crearProducto, producto);
 
-            if (crearProducto.ImagenUrl != null)
-            {
-                producto!.ImagenUrl = await _cargarArchivos.ActualizarArchivo(TiposArchivo.ImagenProducto, crearProducto.ImagenUrl!, producto.ImagenUrl!);
-            }
-
             try
             {
                 _context.Entry(producto!).State = EntityState.Modified;

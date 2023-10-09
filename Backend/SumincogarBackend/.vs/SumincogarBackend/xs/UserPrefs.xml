@@ -1,12 +1,13 @@
 ﻿<Properties StartupConfiguration="{EA3E2132-400C-4E65-8764-6E08BF6DC6CD}|Default">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.SumincogarBackend PreferredExecutionTarget="/Applications/Opera GX.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SumincogarBackend/Controllers/ProductosController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SumincogarBackend/DTO/ProductoDTO/CrearProducto.cs">
     <Files>
-      <File FileName="SumincogarBackend/Controllers/ProductosController.cs" Line="85" Column="49" />
+      <File FileName="SumincogarBackend/Controllers/ProductosController.cs" Line="204" Column="70" />
       <File FileName="SumincogarBackend/Controllers/PromocionesController.cs" />
       <File FileName="SumincogarBackend/DTO/ProductoDTO/InfoGeneralProducto.cs" />
       <File FileName="SumincogarBackend/DTO/FichaTecnicaDTO/BuscarFichaTecnica.cs" />
@@ -19,17 +20,17 @@
       <File FileName="SumincogarBackend/Controllers/CatalogosController.cs" />
       <File FileName="SumincogarBackend/Controllers/CategoriasController.cs" />
       <File FileName="SumincogarBackend/Controllers/ParametrosTecnicosController.cs" />
-      <File FileName="SumincogarBackend/DTO/DetalleInventarioDTO/BuscarDetalleInventario.cs" />
+      <File FileName="SumincogarBackend/DTO/DetalleInventarioDTO/BuscarDetalleInventario.cs" Line="1" Column="45" />
+      <File FileName="SumincogarBackend/DTO/ProductoDTO/CrearProducto.cs" Line="11" Column="1" />
+      <File FileName="SumincogarBackend/Models/Producto.cs" Line="14" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="SumincogarBackend" expanded="True">
-            <Node name="SumincogarBackend" expanded="True">
+          <Node name="SumincogarBackend">
+            <Node name="SumincogarBackend">
               <Node name="AutoMapper" expanded="True" />
-              <Node name="Controllers" expanded="True">
-                <Node name="ProductosController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
               <Node name="DTO" expanded="True">
                 <Node name="DetalleInventarioDTO" expanded="True" />
                 <Node name="FichaTecnicaDTO" expanded="True" />
@@ -44,6 +45,5 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.SumincogarBackend PreferredExecutionTarget="/Applications/Opera GX.app" />
 </Properties>
