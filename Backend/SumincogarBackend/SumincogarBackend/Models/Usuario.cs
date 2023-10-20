@@ -10,5 +10,6 @@ namespace SumincogarBackend.Models
         public string Apellido { get; set; } = null!;
         public bool Tutorial { get; set; }
         public bool ResetPassword { get; set; }
+        public string? Email { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace SumincogarBackend.Controllers
         {
             var promociones = await _context.Promocion.Include(x => x.Promocionimagen)
                 .Where(x => x.FechaCaducidad > DateTime.Now)
-                .OrderBy(x => x.FechaIngreso)
+                .OrderByDescending(x => x.FechaIngreso)
                 .ToListAsync();
 
             return _mapper.Map<List<BuscarPromocion>>(promociones);
@@ -105,57 +105,30 @@ namespace SumincogarBackend.Controllers
             {
                 return NotFound();
             }
-            var promocion = await _context.Promocion.FindAsync(id);
+            var promocion = await _context.Promocion.FindAsync(id);           
             if (promocion == null)
             {
                 return NotFound();
+            }
+
+            var imgPromociones = await _context.Promocionimagen.Where(x => x.PromocionId == id).ToListAsync();
+            if (imgPromociones.Any())
+            {
+                _context.Promocionimagen.RemoveRange();                
+                await _context.SaveChangesAsync();
+
+                foreach (var img in imgPromociones)
+                {
+                    await _cargarArchivos.BorrarArchivo(TiposArchivo.Promocion, img.Url);
+                }
             }
 
             _context.Promocion.Remove(promocion);
             await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
-
-        [HttpPost("promocionImagen")]
-        public async Task<IActionResult> PostPromocionImagen([FromForm] CrearPromocionImagen crearPromocionImagen)
-        {
-            var promocionImagen = _mapper.Map<Promocionimagen>(crearPromocionImagen);
-
-            if (crearPromocionImagen.Url != null)
-            {
-                promocionImagen!.Url = await _cargarArchivos.CargarArchivo(TiposArchivo.Promocion, crearPromocionImagen.Url);
-            }
-
-            try
-            {
-                _context.Promocionimagen.Add(promocionImagen);
-                await _context.SaveChangesAsync();
-            }catch (Exception)
-            {
-                return BadRequest();
-            }
+            await _cargarArchivos.BorrarArchivo(TiposArchivo.Promocion, promocion.ImagenPrincipal);
 
             return Ok();
-        }
-
-        [HttpDelete("promocionImagen/{id}")]
-        public async Task<IActionResult> DeletePromocionImagen(int id)
-        {
-            if (_context.Promocionimagen == null)
-            {
-                return NotFound();
-            }
-            var promocion = await _context.Promocionimagen.FindAsync(id);
-            if (promocion == null)
-            {
-                return NotFound();
-            }
-
-            _context.Promocionimagen.Remove(promocion);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }        
+        }      
     }
 }

@@ -9,6 +9,8 @@ using SumincogarBackend.DTO.FichaTecnicaDTO;
 using SumincogarBackend.DTO.ProductoDTO;
 using SumincogarBackend.Models;
 using SumincogarBackend.Services.CargarArchivos;
+using System;
+using System.Linq;
 
 namespace SumincogarBackend.Controllers
 {
@@ -113,10 +115,12 @@ namespace SumincogarBackend.Controllers
 
             if (detalleInventario == null) return NotFound("No Existe en el Inventario");
 
-            var infoGeneralProducto = new InfoGeneralProducto();
-            infoGeneralProducto.CodCliente = detalleInventario[0].CodCliente;
-            
-            foreach(var detalle in detalleInventario)
+            var infoGeneralProducto = new InfoGeneralProducto
+            {
+                CodCliente = detalleInventario[0].CodCliente
+            };
+
+            foreach (var detalle in detalleInventario)
             {
                 var producto = await _context.Producto
                     //.Include(x => x.Imagenreferencial)
@@ -152,16 +156,67 @@ namespace SumincogarBackend.Controllers
             return infoGeneralProducto;
         }
 
-        [HttpPut("{productoId}")]
-        public async Task<IActionResult> PutProducto(int productoId, [FromForm] CrearProducto crearProducto)
+        [HttpGet("coloresSimilaresStock")]
+        public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetColoresSimilaresStock([FromQuery] string codigo)
+        {
+            var codigosProductos = await _context.Detalleinventario
+                .Where(x => x.CodCliente == codigo).Select(x => x.CodProducto).ToListAsync();
+
+            if (codigosProductos == null) return NotFound("No Existe en el Inventario");
+
+            var productosId = await _context.Producto.Where(x => codigosProductos.Contains(x.Codigo)).Select(x => x.ProductoId).ToListAsync();
+
+            var coloresId = await _context.ProductoGamacolor.Where(x => productosId.Contains(x.ProductoId)).Select(x => x.GamaColorId).ToListAsync();
+
+            var productosSimilares = await _context.ProductoGamacolor.Include(x => x.Producto)
+                .Where(x => !productosId.Contains(x.ProductoId))
+                .Where(x => coloresId.Contains(x.GamaColorId))
+                .Select(x => x.Producto)
+                .ToListAsync();
+
+            if (productosSimilares.Count > 20)
+            {
+                Random random = new();
+                // Obtener 20 elementos aleatorios de la lista
+                var elementosAleatorios = productosSimilares.OrderBy(x => random.Next()).Take(20).ToList();
+
+                return _mapper.Map<List<BuscarProducto>>(elementosAleatorios);
+            }
+
+            return _mapper.Map<List<BuscarProducto>>(productosSimilares);
+        }
+
+        [HttpGet("coloresSimilares")]
+        public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetColoresSimilares([FromQuery] string codigo)
+        {
+
+            var productosId = await _context.Producto.Where(x => x.Codigo.Equals(codigo)).Select(x => x.ProductoId).ToListAsync();
+
+            var coloresId = await _context.ProductoGamacolor.Where(x => productosId.Contains(x.ProductoId)).Select(x => x.GamaColorId).ToListAsync();
+
+            var productosSimilares = await _context.ProductoGamacolor.Include(x => x.Producto)
+                .Where(x => !productosId.Contains(x.ProductoId))
+                .Where(x => coloresId.Contains(x.GamaColorId))
+                .Select(x => x.Producto)
+                .ToListAsync();
+
+            if (productosSimilares.Count > 20)
+            {
+                Random random = new();
+                // Obtener 20 elementos aleatorios de la lista
+                var elementosAleatorios = productosSimilares.OrderBy(x => random.Next()).Take(20).ToList();
+
+                return _mapper.Map<List<BuscarProducto>>(elementosAleatorios);
+            }
+
+            return _mapper.Map<List<BuscarProducto>>(productosSimilares);
+        }
+
+        [HttpPut("infoProducto/{productoId}")]
+        public async Task<IActionResult> PutProducto(int productoId, [FromBody] CrearProducto crearProducto)
         {            
             var producto = await _context.Producto.FindAsync(productoId);
             producto = _mapper.Map(crearProducto, producto);
-
-            if (crearProducto.ImagenUrl != null)
-            {
-                producto!.ImagenUrl = await _cargarArchivos.ActualizarArchivo(TiposArchivo.ImagenProducto, crearProducto.ImagenUrl!, producto.ImagenUrl!);
-            }
 
             try
             {
@@ -172,8 +227,6 @@ namespace SumincogarBackend.Controllers
             {
                 return BadRequest();
             }
-
-            producto = await _context.Producto.FirstOrDefaultAsync(x => x.ProductoId == productoId);
 
             return Ok();
         }

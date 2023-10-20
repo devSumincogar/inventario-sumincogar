@@ -5,6 +5,9 @@ namespace SumincogarBackend.DTO.UsuariosDTO
     public class UpdateUsuario
     {
         [Required]
-        public string Email { get; set; } = string.Empty;
+        public string UsuarioId { get; set; } = null!;
+        public string Nombre { get; set; } = null!;
+        public string Apellido { get; set; } = null!;
+        public string? Email { get; set; }
     }
 }

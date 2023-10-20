@@ -4,6 +4,9 @@ D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarB
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.pdb
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\AutoMapper.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\EPPlus.dll
+D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\EPPlus.Interfaces.dll
+D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\EPPlus.System.Drawing.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Humanizer.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\MessagePack.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\MessagePack.Annotations.dll
@@ -48,6 +51,7 @@ D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarB
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Microsoft.IdentityModel.Tokens.dll
+D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Microsoft.IO.RecyclableMemoryStream.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Microsoft.NET.StringTools.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Microsoft.OpenApi.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\Microsoft.VisualStudio.Debugger.Contracts.dll
@@ -84,6 +88,7 @@ D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarB
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\System.Reflection.MetadataLoadContext.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\System.Runtime.Caching.dll
+D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\System.Security.Cryptography.Pkcs.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\System.Security.Permissions.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\System.Windows.Extensions.dll
@@ -253,6 +258,7 @@ D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarB
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\GitHub\Sumincogar\inventario-sumincogar\Backend\SumincogarBackend\SumincogarBackend\obj\Release\net6.0\PubTmp\Out\SumincogarBackend.deps.json

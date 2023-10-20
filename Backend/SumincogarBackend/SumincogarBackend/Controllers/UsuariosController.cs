@@ -26,24 +26,36 @@ namespace SumincogarBackend.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly db_a977c3_sumincogarContext _context;
+        private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IGeneradorStrings _generadorStrings;
         private readonly IEnviarEmail _enviarEmail;
 
-        public UsuariosController(db_a977c3_sumincogarContext context, UserManager<IdentityUser> userManager, IConfiguration configuration, SignInManager<IdentityUser> signInManager, IGeneradorStrings generadorStrings, IEnviarEmail enviarEmail)
+        public UsuariosController(db_a977c3_sumincogarContext context, IMapper mapper, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IGeneradorStrings generadorStrings, IEnviarEmail enviarEmail)
         {
             _context = context;
+            _mapper = mapper;
             _userManager = userManager;
-            _configuration = configuration;
             _signInManager = signInManager;
+            _configuration = configuration;
             _generadorStrings = generadorStrings;
             _enviarEmail = enviarEmail;
         }
 
+        [HttpGet()]
+        public async Task<IEnumerable<BuscarUsuarioDTO>> GetUsuarios()
+        {
+            var usuarios = await _context.Usuario
+                .OrderBy(x => x.Apellido).ThenBy(x => x.Nombre)
+                .ToListAsync();
+
+            return _mapper.Map<List<BuscarUsuarioDTO>>(usuarios);
+        }
+
         [HttpPost("registrar")]
-        public async Task<ActionResult<RespuestaLogin>> Registrar(CrearUsuarioDTO credencialesUsuario)
+        public async Task<IActionResult> Registrar(CrearUsuarioDTO credencialesUsuario)
         {
             var user = await _userManager.FindByEmailAsync(credencialesUsuario.Email);
 
@@ -53,7 +65,10 @@ namespace SumincogarBackend.Controllers
                 UserName = credencialesUsuario.Email, 
                 Email = credencialesUsuario.Email,
             };
-            var result = await _userManager.CreateAsync(identityUser, credencialesUsuario.Password);
+
+            var newPassword = _generadorStrings.GenerateRandomString(6);
+
+            var result = await _userManager.CreateAsync(identityUser, newPassword);            
 
             if(result.Succeeded)
             {
@@ -64,12 +79,16 @@ namespace SumincogarBackend.Controllers
                     UsuarioId = user.Id,
                     Apellido = credencialesUsuario.Apellido,
                     Nombre = credencialesUsuario.Nombre,
-                    Tutorial = false
+                    Tutorial = false,
+                    ResetPassword = true,
                 });
 
                 await _context.SaveChangesAsync();
 
-                return await ConstruirToken(new CredencialesUsuario { Email = user.Email, Password = credencialesUsuario.Password});
+                string body = $"Bienvenido a SumincogarApp, se ha registrado su usuario con el email {credencialesUsuario.Email} y la contraseña para ingresar es: {newPassword}. Al ingresar al app se le solicitará cambiar por una nueva contraseña";
+
+                var isEmailConfirmed = _enviarEmail.SendEmail(credencialesUsuario.Email, "Usuario Registrado Sumincogar App", body);
+                return isEmailConfirmed ? Ok() : BadRequest();
             }
             else
             {
@@ -93,8 +112,38 @@ namespace SumincogarBackend.Controllers
             }
         }
 
+        [HttpPut()]
+        public async Task<IActionResult> PutUsuario([FromBody] UpdateUsuario updateUsuario)
+        {
+            var identityUser = await _userManager.FindByIdAsync(updateUsuario.UsuarioId);
+
+            if (identityUser == null) return BadRequest();
+
+            if (!updateUsuario.Email!.Equals(identityUser.Email))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+                var resultado = await _userManager.ChangeEmailAsync(identityUser, updateUsuario.Email, token);
+            }
+
+            var usuario = await _context.Usuario.Where(x => x.UsuarioId.Equals(updateUsuario.UsuarioId)).FirstAsync();
+
+            usuario = _mapper.Map(updateUsuario, usuario);
+
+            try
+            {
+                _context.Entry(usuario!).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPut("tutorial")]
-        public async Task<ActionResult<RespuestaLogin>> PutUsuario(UpdateUsuario updateUsuario)
+        public async Task<ActionResult<RespuestaLogin>> PutTutorialUsuario(EmailUsuario updateUsuario)
         {
             var user = await _userManager.FindByEmailAsync(updateUsuario.Email);
 
@@ -119,7 +168,7 @@ namespace SumincogarBackend.Controllers
 
         [AllowAnonymous]
         [HttpPut("recuperarContrasenia")]
-        public async Task<IActionResult> PutRecuperarContrasenia([FromBody] UpdateUsuario cambiarContraseniaUsuario)
+        public async Task<IActionResult> PutRecuperarContrasenia([FromBody] EmailUsuario cambiarContraseniaUsuario)
         {
             var identityUser = await _userManager.FindByEmailAsync(cambiarContraseniaUsuario.Email);
 
@@ -156,7 +205,6 @@ namespace SumincogarBackend.Controllers
             }
         }
 
-        
         [HttpPut("cambiarContrasenia")]
         public async Task<IActionResult> PutCambiarContrasenia([FromBody] CambiarContraseniaDTO cambiarContraseniaUsuario)
         {

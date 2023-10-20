@@ -17,6 +17,9 @@ namespace SumincogarBackend.AutoMapper
     {
         public AutoMapperProfiles()
         {
+            CreateMap<DateTime, string>().ConvertUsing(dt => dt.ToString("dd/MM/yyyy"));            
+            CreateMap<string, string>().ConvertUsing(st => string.IsNullOrWhiteSpace(st) ? "" : st.Trim());
+
             CreateMap<CrearCategoria, Categoria>();
             CreateMap<Categoria, BuscarCategoria>();
 
@@ -27,12 +30,12 @@ namespace SumincogarBackend.AutoMapper
             CreateMap<GamaColor, BuscarGamaColor>();
 
             CreateMap<CrearFichaTecnica, Fichatecnica>()
-                .ForMember(x => x.DocumentoUrl, options => options.Ignore());
+                .ForMember(dest => dest.DocumentoUrl, options => options.Ignore());
             CreateMap<Fichatecnica, BuscarFichaTecnica>()
                 .ForMember(dest => dest.SubCategoriaName, 
                     opt => opt.MapFrom(src => src.Subcategoria!.SubcategoriaNombre))
                 .ForMember(dest => dest.DocumentoUrl,
-                    opt => opt.MapFrom(src => src.DocumentoUrl == null ? "" : src.DocumentoUrl))
+                    opt => opt.MapFrom(src => src.DocumentoUrl ?? ""))
                 .ForMember(dest => dest.Parametros,
                     opt => opt.MapFrom(src => src.Parametrotecnico));
 
@@ -40,34 +43,38 @@ namespace SumincogarBackend.AutoMapper
             CreateMap<Parametrotecnico, BuscarParametroTecnico>();
 
             CreateMap<CrearCatalogo, Catalogo>()
-                .ForMember(x => x.Url, options => options.Ignore())
-                .ForMember(x => x.ImagenUrl, options => options.Ignore());
+                .ForMember(dest => dest.Url, opt => opt.Ignore())
+                .ForMember(dest => dest.ImagenUrl, opt => opt.Ignore());
             CreateMap<Catalogo, BuscarCatalogo>()
                 .ForMember(dest => dest.Url,
-                    opt => opt.MapFrom(src => src.Url == null ? "" : src.Url))
+                    opt => opt.MapFrom(src => src.Url ?? ""))
                 .ForMember(dest => dest.ImagenUrl,
-                    opt => opt.MapFrom(src => src.ImagenUrl == null ? "" : src.ImagenUrl));
+                    opt => opt.MapFrom(src => src.ImagenUrl ?? ""));
 
             CreateMap<CrearPromocion, Promocion>()
-                .ForMember(x => x.ImagenPrincipal, options => options.Ignore());
+                .ForMember(dest => dest.ImagenPrincipal, opt => opt.Ignore())
+                .ForMember(dest => dest.FechaIngreso,
+                    opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(dest => dest.Prioridad,
+                    opt => opt.MapFrom(src => false));
             CreateMap<Promocion, BuscarPromocion>()
                 .ForMember(dest => dest.ImagenPrincipal,
-                    opt => opt.MapFrom(src => src.ImagenPrincipal == null ? "" : src.ImagenPrincipal))
+                    opt => opt.MapFrom(src => src.ImagenPrincipal ?? ""))
                 .ForMember(dest => dest.Imagenes,
                     opt => opt.MapFrom(src => src.Promocionimagen));
             CreateMap<CrearPromocionImagen, Promocionimagen>()
                 .ForMember(x => x.Url, options => options.Ignore());
             CreateMap<Promocionimagen, BuscarPromocionImagen>()
                 .ForMember(dest => dest.Url,
-                    opt => opt.MapFrom(src => src.Url == null ? "" : src.Url));
+                    opt => opt.MapFrom(src => src.Url ?? ""));
 
             CreateMap<CrearProducto, Producto>()
                 .ForMember(x => x.ImagenUrl, options => options.Ignore());
             CreateMap<Producto, BuscarProducto>().ForMember(
                 dest => dest.ImagenUrl,
-                opt => opt.MapFrom(src => src.ImagenUrl == null ? "" : src.ImagenUrl)
+                opt => opt.MapFrom(src => src.ImagenUrl ?? "")
             ).ForMember(dest => dest.CategoriaId,
-                    opt => opt.MapFrom(src => src.Subcategoria.CategoriaId)
+                    opt => opt.MapFrom(src => src.Subcategoria!.CategoriaId)
             ).ForMember(dest => dest.Imagenes,
                     opt => opt.MapFrom(src => src.Imagenreferencial)
             ).ForMember(dest => dest.GamasColor,
@@ -76,7 +83,7 @@ namespace SumincogarBackend.AutoMapper
                 .ForMember(x => x.Url, options => options.Ignore());
             CreateMap<Imagenreferencial, BuscarImagenRefencial>().ForMember(
                 dest => dest.Url,
-                opt => opt.MapFrom(src => src.Url == null ? "" : src.Url)
+                opt => opt.MapFrom(src => src.Url ?? "")
             );
 
             CreateMap<Detalleinventario, BuscarDetalleInventario>().ForMember(
@@ -84,8 +91,8 @@ namespace SumincogarBackend.AutoMapper
                 opt => opt.MapFrom(src => src.Stock!.Equals("ALTO") ? 1 : src.Stock!.Equals("MEDIO") ? 2 : src.Stock!.Equals("BAJO") ? 3 : 4)
             );
 
-            CreateMap<CrearUsuarioDTO, Usuario>();
-
+            CreateMap<UpdateUsuario, Usuario>();
+            CreateMap<Usuario, BuscarUsuarioDTO>();
         }
     }
 }

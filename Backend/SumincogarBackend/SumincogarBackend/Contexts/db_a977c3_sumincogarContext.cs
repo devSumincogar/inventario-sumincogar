@@ -34,6 +34,7 @@ namespace SumincogarBackend.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -311,6 +312,10 @@ namespace SumincogarBackend.Contexts
                     .HasMaxLength(500)
                     .IsUnicode(false)
                     .HasColumnName("APELLIDO");
+
+                entity.Property(e => e.Email)
+                    .IsUnicode(false)
+                    .HasColumnName("EMAIL");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(500)

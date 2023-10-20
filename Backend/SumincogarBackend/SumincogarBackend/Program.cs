@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NuGet.Configuration;
+using OfficeOpenXml;
 using SumincogarBackend.Contexts;
 using SumincogarBackend.DTO.UsuariosDTO;
 using SumincogarBackend.Services.AlmacenadorArchivos;
 using SumincogarBackend.Services.CargarArchivos;
 using SumincogarBackend.Services.EnviarEmails;
 using SumincogarBackend.Services.GeneradorStrings;
+using System.Numerics;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 var settings = builder.Configuration;
 
 // Add services to the container.
+
+System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 builder.Services.AddCors(options =>
 {
@@ -101,6 +106,7 @@ builder.Services.AddTransient<IGeneradorStrings, GeneradorStrings>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
+
 
 var app = builder.Build();
 
