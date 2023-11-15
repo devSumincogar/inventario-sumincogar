@@ -7,7 +7,6 @@ namespace SumincogarBackend.Models
     {
         public SubCategoria()
         {
-            Fichatecnica = new HashSet<Fichatecnica>();
             Producto = new HashSet<Producto>();
         }
 
@@ -16,7 +15,6 @@ namespace SumincogarBackend.Models
         public int CategoriaId { get; set; }
 
         public virtual Categoria Categoria { get; set; } = null!;
-        public virtual ICollection<Fichatecnica> Fichatecnica { get; set; }
         public virtual ICollection<Producto> Producto { get; set; }
     }
 }

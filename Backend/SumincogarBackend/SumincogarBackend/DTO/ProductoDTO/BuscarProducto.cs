@@ -1,4 +1,5 @@
 ﻿using SumincogarBackend.DTO.GamaColorDTO;
+using SumincogarBackend.DTO.ImagenReferencialDTO;
 
 namespace SumincogarBackend.DTO.ProductoDTO
 {
@@ -11,6 +12,6 @@ namespace SumincogarBackend.DTO.ProductoDTO
         public int CategoriaId { get; set; }
         public int? SubcategoriaId { get; set; }
         public List<BuscarGamaColor> GamasColor { get; set; } = new List<BuscarGamaColor>();
-        public List<BuscarImagenRefencial> Imagenes { get; set; } = new List<BuscarImagenRefencial>();
+        public List<Imagen> Imagenes { get; set; } = new List<Imagen>();
     }
 }

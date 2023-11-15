@@ -7,7 +7,6 @@ namespace SumincogarBackend.Models
     {
         public Producto()
         {
-            Imagenreferencial = new HashSet<Imagenreferencial>();
             ProductoGamacolor = new HashSet<ProductoGamacolor>();
         }
 
@@ -18,7 +17,6 @@ namespace SumincogarBackend.Models
         public int? SubcategoriaId { get; set; }
 
         public virtual SubCategoria? Subcategoria { get; set; }
-        public virtual ICollection<Imagenreferencial> Imagenreferencial { get; set; }
         public virtual ICollection<ProductoGamacolor> ProductoGamacolor { get; set; }
     }
 }

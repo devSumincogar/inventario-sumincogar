@@ -32,19 +32,20 @@ namespace SumincogarBackend.Controllers
             _cargarArchivos = cargarArchivos;
         }
 
-        [HttpGet("subCategoria/{subcategoriaId}")]
-        public async Task<ActionResult<IEnumerable<BuscarFichaTecnica>>> GetFichatecnicaXCategoria(int subcategoriaId)
+        [HttpGet("codCliente/{codCliente}")]
+        public async Task<ActionResult<IEnumerable<BuscarFichaTecnica>>> GetFichatecnicaXCategoria(string codCliente)
         {
-            var fichasTecnicas = await _context.Fichatecnica.Include(x => x.Subcategoria)
+            var fichasTecnicas = await _context.Fichatecnica
                 .Include(x => x.Parametrotecnico)
-                .Where(x => x.SubcategoriaId == subcategoriaId).ToListAsync();
+                .Where(x => x.CodCliente!.Equals(codCliente)).ToListAsync();
+
             return _mapper.Map<List<BuscarFichaTecnica>>(fichasTecnicas);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<BuscarFichaTecnica>> GetFichatecnica(int id)
         {
-            var fichatecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
+            var fichatecnica = await _context.Fichatecnica
                 .Include(x => x.Parametrotecnico)
                 .FirstOrDefaultAsync(x => x.FichaTecnicaId == id);
 
@@ -52,7 +53,7 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BuscarFichaTecnica>> PutFichatecnica(int id, [FromForm] CrearFichaTecnica crearFichaTecnica)
+        public async Task<IActionResult> PutFichatecnica(int id, [FromForm] CrearFichaTecnica crearFichaTecnica)
         {
             var fichaTecnica = await _context.Fichatecnica.FindAsync(id);
             fichaTecnica = _mapper.Map(crearFichaTecnica, fichaTecnica);
@@ -72,15 +73,11 @@ namespace SumincogarBackend.Controllers
                 return BadRequest();
             }
 
-            fichaTecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
-                .Include(x => x.Parametrotecnico)
-                .FirstOrDefaultAsync(x => x.FichaTecnicaId == id);
-
-            return _mapper.Map<BuscarFichaTecnica>(fichaTecnica);
+            return Ok();
         }
 
         [HttpPost]
-        public async Task<ActionResult<BuscarFichaTecnica>> PostFichatecnica([FromForm] CrearFichaTecnica crearFichaTecnica)
+        public async Task<IActionResult> PostFichatecnica([FromForm] CrearFichaTecnica crearFichaTecnica)
         {
             var fichaTecnica = _mapper.Map<Fichatecnica>(crearFichaTecnica);
 
@@ -92,11 +89,7 @@ namespace SumincogarBackend.Controllers
             _context.Fichatecnica.Add(fichaTecnica);
             await _context.SaveChangesAsync();
 
-            fichaTecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
-                .Include(x => x.Parametrotecnico)
-                .FirstOrDefaultAsync(x => x.FichaTecnicaId == fichaTecnica.FichaTecnicaId);
-
-            return _mapper.Map<BuscarFichaTecnica>(fichaTecnica);
+            return Ok();
         }        
     }
 }

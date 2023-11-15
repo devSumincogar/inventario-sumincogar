@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SumincogarBackend.Contexts;
 using SumincogarBackend.DTO.DetalleInventarioDTO;
 using SumincogarBackend.DTO.FichaTecnicaDTO;
+using SumincogarBackend.DTO.ImagenReferencialDTO;
 using SumincogarBackend.DTO.ProductoDTO;
 using SumincogarBackend.Models;
 using SumincogarBackend.Services.CargarArchivos;
@@ -44,7 +45,6 @@ namespace SumincogarBackend.Controllers
             }
 
             var productos = await _context.Producto
-                .Include(x => x.Imagenreferencial)
                 .Include(x => x.Subcategoria)
                 .Include(x => x.ProductoGamacolor).ThenInclude(x => x.GamaColor)
                 .Where(x => x.SubcategoriaId == subCategoriaId || subCategoriaId == null)
@@ -58,7 +58,6 @@ namespace SumincogarBackend.Controllers
         public async Task<ActionResult<BuscarProducto>> GetProducto(string codigo)
         {
             var producto = await _context.Producto
-                .Include(x => x.Imagenreferencial)
                 .Include(x => x.Subcategoria)
                 .Include(x => x.ProductoGamacolor).ThenInclude(x => x.GamaColor)
                 .FirstOrDefaultAsync(x => x.Codigo.Equals(codigo)
@@ -72,16 +71,24 @@ namespace SumincogarBackend.Controllers
         [HttpGet("codigo")]
         public async Task<ActionResult<InfoGeneralProducto>> GetProductoPorCodigo([FromQuery] string codigo)
         {
-            var infoGeneralProducto = new InfoGeneralProducto();
-
             var producto = await _context.Producto
-                .Include(x => x.Imagenreferencial)
                 .Include(x => x.Subcategoria)
                 .Where(x => x.Codigo == codigo).FirstAsync();
 
             if (producto == null) return BadRequest();
 
             var detalle = await _context.Detalleinventario.Where(x => x.CodProducto == codigo).FirstOrDefaultAsync();
+
+            if(detalle == null) return NotFound();
+
+            var infoGeneralProducto = new InfoGeneralProducto
+            {
+                CodCliente = detalle!.CodCliente,
+                Descontinuada = detalle.Descontinuada ?? false,
+                TelasSimilares = detalle.TelasSimilares
+            };
+
+            if (infoGeneralProducto.Descontinuada == true) return infoGeneralProducto;
 
             var productoInventario = new ProductoInventario
             {
@@ -97,11 +104,19 @@ namespace SumincogarBackend.Controllers
             };
 
             infoGeneralProducto.Productos.Add(productoInventario);
-            infoGeneralProducto.Imagenes.AddRange(_mapper.Map<List<BuscarImagenRefencial>>(producto.Imagenreferencial));
+
+            var imagenes = await _context.Imagenreferencial.Where(x => x.CodCliente!.Equals(detalle!.CodCliente))
+                .Select(x => new Imagen
+                {
+                    ImagenReferenciaId = x.ImagenReferenciaId,
+                    Url = x.Url
+                })
+                .ToListAsync();
+            infoGeneralProducto.Imagenes.AddRange(imagenes);
 
             infoGeneralProducto.Productos = infoGeneralProducto.Productos.OrderBy(x => x.Orden).ToList();
 
-            var fichaTecnica = await _context.Fichatecnica.Where(x => x.SubcategoriaId == producto.SubcategoriaId).FirstOrDefaultAsync();
+            var fichaTecnica = await _context.Fichatecnica.Where(x => x.CodCliente == detalle!.CodCliente).FirstOrDefaultAsync();
             infoGeneralProducto.FichaTecnica = _mapper.Map<BuscarFichaTecnica>(fichaTecnica);
 
             return infoGeneralProducto;
@@ -110,6 +125,12 @@ namespace SumincogarBackend.Controllers
         [HttpGet("enStock")]
         public async Task<ActionResult<InfoGeneralProducto>> GetDetalleInventario([FromQuery] string codigo)
         {
+            var producto = await _context.Producto
+               .Include(x => x.Subcategoria)
+               .Where(x => x.Codigo == codigo).FirstAsync();
+
+            if (producto == null) return BadRequest("No existe el producto");
+
             var detalleInventario = await _context.Detalleinventario
                 .Where(x => x.CodCliente == codigo).ToListAsync();
 
@@ -117,17 +138,16 @@ namespace SumincogarBackend.Controllers
 
             var infoGeneralProducto = new InfoGeneralProducto
             {
-                CodCliente = detalleInventario[0].CodCliente
+                CodCliente = detalleInventario[0].CodCliente,
+                Descontinuada = detalleInventario[0].Descontinuada ?? false,
+                TelasSimilares = detalleInventario[0].TelasSimilares
             };
+
+
+            if (infoGeneralProducto.Descontinuada == true) return infoGeneralProducto;
 
             foreach (var detalle in detalleInventario)
             {
-                var producto = await _context.Producto
-                    //.Include(x => x.Imagenreferencial)
-                    .Include(x => x.Subcategoria)
-                    .Where(x => x.Codigo == detalle.CodProducto).FirstAsync();
-
-                if (producto == null) continue;
 
                 var productoInventario = new ProductoInventario
                 {
@@ -144,13 +164,20 @@ namespace SumincogarBackend.Controllers
                 };
 
                 infoGeneralProducto.Productos.Add(productoInventario);
-                //infoGeneralProducto.Imagenes.AddRange(_mapper.Map<List<BuscarImagenRefencial>>(producto.Imagenreferencial));
+                var imagenes = await _context.Imagenreferencial.Where(x => x.CodCliente!.Equals(codigo))
+                .Select(x => new Imagen
+                {
+                    ImagenReferenciaId = x.ImagenReferenciaId,
+                    Url = x.Url
+                })
+                .ToListAsync();
+                infoGeneralProducto.Imagenes.AddRange(imagenes);
             }
 
             infoGeneralProducto.Productos = infoGeneralProducto.Productos.OrderBy(x => x.Orden).ToList();
 
 
-            var fichaTecnica = await _context.Fichatecnica.Where(x => x.SubcategoriaId == infoGeneralProducto.Productos[0].SubCategoriaId).FirstOrDefaultAsync();
+            var fichaTecnica = await _context.Fichatecnica.Where(x => x.CodCliente == codigo).FirstOrDefaultAsync();
             infoGeneralProducto.FichaTecnica = _mapper.Map<BuscarFichaTecnica>(fichaTecnica);
 
             return infoGeneralProducto;
@@ -210,6 +237,23 @@ namespace SumincogarBackend.Controllers
             }
 
             return _mapper.Map<List<BuscarProducto>>(productosSimilares);
+        }
+
+        [HttpGet("productosSimilares")]
+        public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetProductosSimilares([FromQuery] string codigo)
+        {
+
+            var producto = await _context.Producto.Where(x => x.Codigo.Equals(codigo)).FirstAsync();
+            
+            var productosSimilares = await _context.Producto.Where(x => x.SubcategoriaId == producto.SubcategoriaId)
+                .Select(x => x.Codigo).ToListAsync();
+
+            var productosEnStock = await _context.Detalleinventario
+                .Where(x => productosSimilares.Contains(x.CodProducto!)).Select(x => x.CodProducto).ToListAsync();
+
+            var productos = await _context.Producto.Where(x => productosEnStock.Contains(x.Codigo)).ToListAsync();
+
+            return _mapper.Map<List<BuscarProducto>>(productos);
         }
 
         [HttpPut("infoProducto/{productoId}")]
@@ -273,47 +317,7 @@ namespace SumincogarBackend.Controllers
 
             return Ok();
         }
-
-        [HttpPost("imagenReferencial")]
-        public async Task<IActionResult> PostImagenReferencialProducto([FromForm] CrearImagenReferencial crearImagenReferencial)
-        {
-            var imagenReferencial = _mapper.Map<Imagenreferencial>(crearImagenReferencial);
-
-            if(crearImagenReferencial.Url != null)
-            {
-                imagenReferencial!.Url = await _cargarArchivos.CargarArchivo(TiposArchivo.ImagenProducto, crearImagenReferencial!.Url!);
-            }
-
-            _context.Imagenreferencial.Add(imagenReferencial);
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }
-
-        [HttpDelete("imagenReferencial/{id}")]
-        public async Task<IActionResult> DeleteImagenReferencialProducto(int id)
-        {
-            if (_context.Imagenreferencial == null)
-            {
-                return NotFound();
-            }
-            var imagenReferencial = await _context.Imagenreferencial.FindAsync(id);
-            if (imagenReferencial == null)
-            {
-                return NotFound();
-            }
-
-            if (imagenReferencial.Url != null)
-            {
-                await _cargarArchivos.BorrarArchivo(TiposArchivo.Catalogo, imagenReferencial.Url);
-            }
-
-            _context.Imagenreferencial.Remove(imagenReferencial);
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }
-
+        
         private async Task<bool> ExistNameOrCode(CrearProducto producto)
         {
             return await _context.Producto.AnyAsync(x => x.ProductoNombre.Equals(producto.ProductoNombre) || x.Codigo.Equals(producto.Codigo));

@@ -4,6 +4,7 @@ using SumincogarBackend.DTO.CategoriaDTO;
 using SumincogarBackend.DTO.DetalleInventarioDTO;
 using SumincogarBackend.DTO.FichaTecnicaDTO;
 using SumincogarBackend.DTO.GamaColorDTO;
+using SumincogarBackend.DTO.ImagenReferencialDTO;
 using SumincogarBackend.DTO.ParametroTecnicoDTO;
 using SumincogarBackend.DTO.ProductoDTO;
 using SumincogarBackend.DTO.PromocionDTO;
@@ -31,9 +32,7 @@ namespace SumincogarBackend.AutoMapper
 
             CreateMap<CrearFichaTecnica, Fichatecnica>()
                 .ForMember(dest => dest.DocumentoUrl, options => options.Ignore());
-            CreateMap<Fichatecnica, BuscarFichaTecnica>()
-                .ForMember(dest => dest.SubCategoriaName, 
-                    opt => opt.MapFrom(src => src.Subcategoria!.SubcategoriaNombre))
+            CreateMap<Fichatecnica, BuscarFichaTecnica>()                
                 .ForMember(dest => dest.DocumentoUrl,
                     opt => opt.MapFrom(src => src.DocumentoUrl ?? ""))
                 .ForMember(dest => dest.Parametros,
@@ -75,16 +74,11 @@ namespace SumincogarBackend.AutoMapper
                 opt => opt.MapFrom(src => src.ImagenUrl ?? "")
             ).ForMember(dest => dest.CategoriaId,
                     opt => opt.MapFrom(src => src.Subcategoria!.CategoriaId)
-            ).ForMember(dest => dest.Imagenes,
-                    opt => opt.MapFrom(src => src.Imagenreferencial)
             ).ForMember(dest => dest.GamasColor,
                     opt => opt.MapFrom(src => src.ProductoGamacolor.Select(x => x.GamaColor).ToList()));
+
             CreateMap<CrearImagenReferencial, Imagenreferencial>()
                 .ForMember(x => x.Url, options => options.Ignore());
-            CreateMap<Imagenreferencial, BuscarImagenRefencial>().ForMember(
-                dest => dest.Url,
-                opt => opt.MapFrom(src => src.Url ?? "")
-            );
 
             CreateMap<Detalleinventario, BuscarDetalleInventario>().ForMember(
                 dest => dest.Orden,

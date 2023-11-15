@@ -34,7 +34,7 @@ namespace SumincogarBackend.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -114,6 +114,10 @@ namespace SumincogarBackend.Contexts
 
                 entity.Property(e => e.FichaTecnicaId).HasColumnName("FICHA_TECNICA_ID");
 
+                entity.Property(e => e.CodCliente)
+                    .IsUnicode(false)
+                    .HasColumnName("COD_CLIENTE");
+
                 entity.Property(e => e.DocumentoUrl)
                     .IsUnicode(false)
                     .HasColumnName("DOCUMENTO_URL");
@@ -121,13 +125,6 @@ namespace SumincogarBackend.Contexts
                 entity.Property(e => e.NombreFichaTecnica)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE_FICHA_TECNICA");
-
-                entity.Property(e => e.SubcategoriaId).HasColumnName("SUBCATEGORIA_ID");
-
-                entity.HasOne(d => d.Subcategoria)
-                    .WithMany(p => p.Fichatecnica)
-                    .HasForeignKey(d => d.SubcategoriaId)
-                    .HasConstraintName("FK__FICHATECN__SUBCA__3587F3E0");
             });
 
             modelBuilder.Entity<GamaColor>(entity =>
@@ -147,20 +144,15 @@ namespace SumincogarBackend.Contexts
 
                 entity.ToTable("IMAGENREFERENCIAL");
 
-                entity.HasIndex(e => e.ProductoId, "RELATIONSHIP_2_FK");
-
                 entity.Property(e => e.ImagenReferenciaId).HasColumnName("IMAGEN_REFERENCIA_ID");
 
-                entity.Property(e => e.ProductoId).HasColumnName("PRODUCTO_ID");
+                entity.Property(e => e.CodCliente)
+                    .IsUnicode(false)
+                    .HasColumnName("COD_CLIENTE");
 
                 entity.Property(e => e.Url)
                     .IsUnicode(false)
                     .HasColumnName("URL");
-
-                entity.HasOne(d => d.Producto)
-                    .WithMany(p => p.Imagenreferencial)
-                    .HasForeignKey(d => d.ProductoId)
-                    .HasConstraintName("FK_IMAGENRE_RELATIONS_PRODUCTO");
             });
 
             modelBuilder.Entity<Parametrotecnico>(entity =>

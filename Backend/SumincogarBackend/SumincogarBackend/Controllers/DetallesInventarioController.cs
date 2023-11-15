@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using SumincogarBackend.Contexts;
-using SumincogarBackend.DTO.DetalleInventarioDTO;
 using SumincogarBackend.Models;
-using SumincogarBackend.Services.CargarArchivos;
 using System.Text;
 
 namespace SumincogarBackend.Controllers
@@ -25,6 +21,7 @@ namespace SumincogarBackend.Controllers
             _context = context;
         }
 
+        
         [HttpPost("csv")]
         public async Task<IActionResult> CargarDetallesInventarioCSV(IFormFile files)
         {
@@ -44,16 +41,17 @@ namespace SumincogarBackend.Controllers
                     {
                         var cells = item.Split(",");
 
-                        if (cells[0].TrimStart('\uFEFF').Equals("COD_CLIENTE")) continue;
+                        if (cells[0].TrimStart('\uFEFF').Equals("CODIGO")) continue;
+
 
                         var detalle = new Detalleinventario
                         {
-                            CodCliente = cells[0].TrimStart('\uFEFF').Trim(),
-                            CodProducto = cells[1].Trim(),
-                            Stock = cells[2].Trim(),
-                            Impresion = cells[3].Trim(),
-                            Descontinuada = cells[4].Trim().Equals("SI"),
-                            TelasSimilares = cells[5].Replace("\r", "")
+                            CodProducto = cells[0].TrimStart('\uFEFF').Trim(),
+                            CodCliente = cells[2].TrimStart('\uFEFF').Trim(),
+                            Stock = cells[3].Trim(),
+                            Impresion = cells[4].Trim(),
+                            Descontinuada = cells[5].Trim().Equals("SI"),
+                            TelasSimilares = cells[6].Replace("\r", "")
                         };
 
                         detalles.Add(detalle);
@@ -81,7 +79,6 @@ namespace SumincogarBackend.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpPost("excel")]
         public async Task<ActionResult<dynamic>> CargarDetallesInventarioEXCEL(IFormFile file)
         {
@@ -98,15 +95,14 @@ namespace SumincogarBackend.Controllers
 
                     for (int row = 2; row <= rowCount; row++)
                     {
-                        
                         var detalle = new Detalleinventario
                         {
-                            CodCliente = worksheet.Cells[row, 1].Value.ToString(),
-                            CodProducto = worksheet.Cells[row, 2].Value.ToString(),
-                            Stock = worksheet.Cells[row, 4].Value.ToString(),
-                            Impresion = worksheet.Cells[row, 5].Value.ToString(),
-                            Descontinuada = worksheet.Cells[row,6].Value.ToString()!.Equals("SI"),
-                            TelasSimilares = "",
+                            CodProducto = worksheet.Cells[row, 1].Value == null ? "" : worksheet.Cells[row, 1].Value.ToString() ?? "",
+                            CodCliente = worksheet.Cells[row, 3].Value == null ? "" : worksheet.Cells[row, 3].Value.ToString() ?? "",
+                            Stock = worksheet.Cells[row, 4].Value == null ? "" : worksheet.Cells[row, 4].Value.ToString() ?? "",
+                            Impresion = worksheet.Cells[row, 5].Value == null ? "" : worksheet.Cells[row, 5].Value.ToString() ?? "",
+                            Descontinuada = worksheet.Cells[row,6].Value != null && worksheet.Cells[row, 6].Value.ToString()!.Equals("SI"),
+                            TelasSimilares = worksheet.Cells[row, 7].Value == null ? "" : worksheet.Cells[row, 7].Value.ToString() ?? "",
                         };
                         detalles.Add(detalle);
                     }

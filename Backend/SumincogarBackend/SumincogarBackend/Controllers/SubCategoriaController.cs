@@ -91,16 +91,7 @@ namespace SumincogarBackend.Controllers
             {
                 productos.ForEach(x => x.SubcategoriaId = null);
                 await _context.SaveChangesAsync();
-            }
-
-            var fichasTecnica = await _context.Fichatecnica.Include(x => x.Subcategoria)
-                .Where(x => x.Subcategoria!.CategoriaId == id).ToListAsync();
-
-            if (fichasTecnica.Any())
-            {
-                fichasTecnica.ForEach(x => x.SubcategoriaId = null);
-                await _context.SaveChangesAsync();
-            }
+            }            
 
             var subcategoria = await _context.SubCategoria.FindAsync(id);
 
