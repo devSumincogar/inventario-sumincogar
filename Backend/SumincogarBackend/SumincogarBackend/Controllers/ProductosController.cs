@@ -68,60 +68,6 @@ namespace SumincogarBackend.Controllers
             return _mapper.Map<BuscarProducto>(producto);
         }
 
-        [HttpGet("codigo")]
-        public async Task<ActionResult<InfoGeneralProducto>> GetProductoPorCodigo([FromQuery] string codigo)
-        {
-            var producto = await _context.Producto
-                .Include(x => x.Subcategoria)
-                .Where(x => x.Codigo == codigo).FirstAsync();
-
-            if (producto == null) return BadRequest();
-
-            var detalle = await _context.Detalleinventario.Where(x => x.CodProducto == codigo).FirstOrDefaultAsync();
-
-            if(detalle == null) return NotFound();
-
-            var infoGeneralProducto = new InfoGeneralProducto
-            {
-                CodCliente = detalle!.CodCliente,
-                Descontinuada = detalle.Descontinuada ?? false,
-                TelasSimilares = detalle.TelasSimilares
-            };
-
-            if (infoGeneralProducto.Descontinuada == true) return infoGeneralProducto;
-
-            var productoInventario = new ProductoInventario
-            {
-                Codigo = producto.Codigo,
-                SubCategoriaId = producto.SubcategoriaId ?? 0,
-                SubCategoriaNombre = producto.Subcategoria!.SubcategoriaNombre ?? "",
-                Impresion = detalle == null ? "" : detalle.Impresion,
-                Stock = detalle == null ? "" : detalle.Stock,
-                ProductoNombre = producto.ProductoNombre,
-                ProductoId = producto.ProductoId,
-                Imagen = producto.ImagenUrl,
-                Orden = detalle == null ? 4 : detalle.Stock!.Equals("ALTO") ? 1 : detalle.Stock!.Equals("MEDIO") ? 2 : detalle.Stock!.Equals("BAJO") ? 3 : 4
-            };
-
-            infoGeneralProducto.Productos.Add(productoInventario);
-
-            var imagenes = await _context.Imagenreferencial.Where(x => x.CodCliente!.Equals(detalle!.CodCliente))
-                .Select(x => new Imagen
-                {
-                    ImagenReferenciaId = x.ImagenReferenciaId,
-                    Url = x.Url
-                })
-                .ToListAsync();
-            infoGeneralProducto.Imagenes.AddRange(imagenes);
-
-            infoGeneralProducto.Productos = infoGeneralProducto.Productos.OrderBy(x => x.Orden).ToList();
-
-            var fichaTecnica = await _context.Fichatecnica.Where(x => x.CodCliente == detalle!.CodCliente).FirstOrDefaultAsync();
-            infoGeneralProducto.FichaTecnica = _mapper.Map<BuscarFichaTecnica>(fichaTecnica);
-
-            return infoGeneralProducto;
-        }
-
         [HttpGet("enStock")]
         public async Task<ActionResult<InfoGeneralProducto>> GetDetalleInventario([FromQuery] string codigo)
         {
@@ -140,15 +86,15 @@ namespace SumincogarBackend.Controllers
             {
                 CodCliente = detalleInventario[0].CodCliente,
                 Descontinuada = detalleInventario[0].Descontinuada ?? false,
-                TelasSimilares = detalleInventario[0].TelasSimilares
+                TelasSimilares = detalleInventario[0].TelasSimilares,
+                CategoriaId = producto.Subcategoria!.CategoriaId,
+                SubCategoriaId = producto.SubcategoriaId,
             };
-
 
             if (infoGeneralProducto.Descontinuada == true) return infoGeneralProducto;
 
             foreach (var detalle in detalleInventario)
             {
-
                 var productoInventario = new ProductoInventario
                 {
                     Codigo = producto.Codigo,
@@ -157,8 +103,7 @@ namespace SumincogarBackend.Controllers
                     Colores = detalle.Colores,
                     Impresion = detalle.Impresion,
                     Stock = detalle.Stock,
-                    ProductoNombre = producto.ProductoNombre,
-                    ProductoId = producto.ProductoId,
+                    ProductoNombre = detalle.ProductoNombre ?? "",
                     Imagen = producto.ImagenUrl,
                     Orden = detalle.Stock!.Equals("ALTO") ? 1 : detalle.Stock!.Equals("MEDIO") ? 2 : detalle.Stock!.Equals("BAJO") ? 3 : 4
                 };
@@ -183,46 +128,18 @@ namespace SumincogarBackend.Controllers
             return infoGeneralProducto;
         }
 
-        [HttpGet("coloresSimilaresStock")]
-        public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetColoresSimilaresStock([FromQuery] string codigo)
-        {
-            var codigosProductos = await _context.Detalleinventario
-                .Where(x => x.CodCliente == codigo).Select(x => x.CodProducto).ToListAsync();
-
-            if (codigosProductos == null) return NotFound("No Existe en el Inventario");
-
-            var productosId = await _context.Producto.Where(x => codigosProductos.Contains(x.Codigo)).Select(x => x.ProductoId).ToListAsync();
-
-            var coloresId = await _context.ProductoGamacolor.Where(x => productosId.Contains(x.ProductoId)).Select(x => x.GamaColorId).ToListAsync();
-
-            var productosSimilares = await _context.ProductoGamacolor.Include(x => x.Producto)
-                .Where(x => !productosId.Contains(x.ProductoId))
-                .Where(x => coloresId.Contains(x.GamaColorId))
-                .Select(x => x.Producto)
-                .ToListAsync();
-
-            if (productosSimilares.Count > 20)
-            {
-                Random random = new();
-                // Obtener 20 elementos aleatorios de la lista
-                var elementosAleatorios = productosSimilares.OrderBy(x => random.Next()).Take(20).ToList();
-
-                return _mapper.Map<List<BuscarProducto>>(elementosAleatorios);
-            }
-
-            return _mapper.Map<List<BuscarProducto>>(productosSimilares);
-        }
 
         [HttpGet("coloresSimilares")]
         public async Task<ActionResult<IEnumerable<BuscarProducto>>> GetColoresSimilares([FromQuery] string codigo)
         {
+            var producto = await _context.Producto.Where(x => x.Codigo.Equals(codigo)).FirstAsync();
 
-            var productosId = await _context.Producto.Where(x => x.Codigo.Equals(codigo)).Select(x => x.ProductoId).ToListAsync();
+            if (producto == null) return NotFound("No Existe en el Inventario");
 
-            var coloresId = await _context.ProductoGamacolor.Where(x => productosId.Contains(x.ProductoId)).Select(x => x.GamaColorId).ToListAsync();
+
+            var coloresId = await _context.ProductoGamacolor.Where(x => x.ProductoId == producto.ProductoId).Select(x => x.GamaColorId).ToListAsync();
 
             var productosSimilares = await _context.ProductoGamacolor.Include(x => x.Producto)
-                .Where(x => !productosId.Contains(x.ProductoId))
                 .Where(x => coloresId.Contains(x.GamaColorId))
                 .Select(x => x.Producto)
                 .ToListAsync();
@@ -314,6 +231,31 @@ namespace SumincogarBackend.Controllers
 
             producto = await _context.Producto
                 .FirstOrDefaultAsync(x => x.ProductoId == producto.ProductoId);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProducto(int id)
+        {
+            var producto = await _context.Producto.FindAsync(id);
+            if (producto == null) return BadRequest("No existe el producto");
+
+            if(producto.ImagenUrl == null)
+            {
+                await _cargarArchivos.BorrarArchivo(TiposArchivo.ImagenProducto, producto.ImagenUrl!);
+            }
+
+            var productosGamaColor = await _context.ProductoGamacolor.Where(x => x.ProductoId == id).ToListAsync();
+
+            if (productosGamaColor.Any())
+            {
+                _context.ProductoGamacolor.RemoveRange(productosGamaColor);
+                await _context.SaveChangesAsync();
+            }
+
+            _context.Producto.Remove(producto);
+            await _context.SaveChangesAsync();
 
             return Ok();
         }

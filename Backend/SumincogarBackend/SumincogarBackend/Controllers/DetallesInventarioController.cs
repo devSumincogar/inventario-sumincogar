@@ -98,10 +98,11 @@ namespace SumincogarBackend.Controllers
                         var detalle = new Detalleinventario
                         {
                             CodProducto = worksheet.Cells[row, 1].Value == null ? "" : worksheet.Cells[row, 1].Value.ToString() ?? "",
+                            ProductoNombre = worksheet.Cells[row, 2].Value == null ? "" : worksheet.Cells[row, 2].Value.ToString() ?? "",
                             CodCliente = worksheet.Cells[row, 3].Value == null ? "" : worksheet.Cells[row, 3].Value.ToString() ?? "",
                             Stock = worksheet.Cells[row, 4].Value == null ? "" : worksheet.Cells[row, 4].Value.ToString() ?? "",
                             Impresion = worksheet.Cells[row, 5].Value == null ? "" : worksheet.Cells[row, 5].Value.ToString() ?? "",
-                            Descontinuada = worksheet.Cells[row,6].Value != null && worksheet.Cells[row, 6].Value.ToString()!.Equals("SI"),
+                            Descontinuada = worksheet.Cells[row,6].Value != null && worksheet.Cells[row, 6].Value.ToString()!.Equals("1"),
                             TelasSimilares = worksheet.Cells[row, 7].Value == null ? "" : worksheet.Cells[row, 7].Value.ToString() ?? "",
                         };
                         detalles.Add(detalle);

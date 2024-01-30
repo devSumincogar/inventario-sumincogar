@@ -90,6 +90,28 @@ namespace SumincogarBackend.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
-        }        
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFichaTecnica(int id)
+        {
+            var parametrosTecnicos = await _context.Parametrotecnico.Where(x => x.FichaTecnicaId == id).ToListAsync();
+
+            if(parametrosTecnicos.Count > 0)
+            {
+                _context.Parametrotecnico.RemoveRange(parametrosTecnicos);
+                await _context.SaveChangesAsync();
+            }
+
+            var fichaTecnica = await _context.Fichatecnica.FindAsync(id);
+
+            if(fichaTecnica != null)
+            {
+                _context.Fichatecnica.Remove(fichaTecnica);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok();
+        }
     }
 }

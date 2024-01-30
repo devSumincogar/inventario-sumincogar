@@ -8,6 +8,8 @@ namespace SumincogarBackend.DTO.ProductoDTO
 	public class InfoGeneralProducto
 	{        
         public string? CodCliente { get; set; }            
+        public int? CategoriaId { get; set; }
+        public int? SubCategoriaId { get; set; }
         public bool Descontinuada { get; set; }
         public string TelasSimilares { get; set; } = string.Empty;
         public BuscarFichaTecnica FichaTecnica { get; set; } = new BuscarFichaTecnica();

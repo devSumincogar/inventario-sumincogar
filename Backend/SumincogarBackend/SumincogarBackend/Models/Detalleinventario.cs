@@ -13,5 +13,6 @@ namespace SumincogarBackend.Models
         public string? Colores { get; set; }
         public bool? Descontinuada { get; set; }
         public string TelasSimilares { get; set; } = null!;
+        public string? ProductoNombre { get; set; }
     }
 }

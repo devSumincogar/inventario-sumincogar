@@ -98,6 +98,10 @@ namespace SumincogarBackend.Contexts
                     .IsUnicode(false)
                     .HasColumnName("IMPRESION");
 
+                entity.Property(e => e.ProductoNombre)
+                    .IsUnicode(false)
+                    .HasColumnName("PRODUCTO_NOMBRE");
+
                 entity.Property(e => e.Stock)
                     .IsUnicode(false)
                     .HasColumnName("STOCK");

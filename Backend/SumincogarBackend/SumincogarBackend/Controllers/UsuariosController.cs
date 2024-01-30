@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Common;
+using OfficeOpenXml;
 using SumincogarBackend.Contexts;
 using SumincogarBackend.DTO.ProductoDTO;
 using SumincogarBackend.DTO.UsuariosDTO;
@@ -17,6 +18,7 @@ using SumincogarBackend.Services.GeneradorStrings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SumincogarBackend.Controllers
 {
@@ -45,32 +47,34 @@ namespace SumincogarBackend.Controllers
         }
 
         [HttpGet()]
-        public async Task<IEnumerable<BuscarUsuarioDTO>> GetUsuarios()
+        public async Task<IEnumerable<BuscarUsuarioDTO>> GetUsuarios([FromQuery] string email)
         {
             var usuarios = await _context.Usuario
-                .OrderBy(x => x.Apellido).ThenBy(x => x.Nombre)
+                .OrderBy(x => x.Nombre).ThenBy(x => x.Apellido)
+                .Where(x => x.Email!.Equals(email))
                 .ToListAsync();
 
             return _mapper.Map<List<BuscarUsuarioDTO>>(usuarios);
         }
+
 
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar(CrearUsuarioDTO credencialesUsuario)
         {
             var user = await _userManager.FindByEmailAsync(credencialesUsuario.Email);
 
-            if(user != null) return BadRequest("El usuario ya se encuentra registrado");
+            if (user != null) return BadRequest("El usuario ya se encuentra registrado");
 
-            var identityUser = new IdentityUser { 
-                UserName = credencialesUsuario.Email, 
+            var identityUser = new IdentityUser {
+                UserName = credencialesUsuario.Email,
                 Email = credencialesUsuario.Email,
             };
 
             var newPassword = _generadorStrings.GenerateRandomString(6);
 
-            var result = await _userManager.CreateAsync(identityUser, newPassword);            
+            var result = await _userManager.CreateAsync(identityUser, newPassword);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 user = await _userManager.FindByEmailAsync(credencialesUsuario.Email);
 
@@ -94,6 +98,115 @@ namespace SumincogarBackend.Controllers
             {
                 return BadRequest(result.Errors);
             }
+        }
+
+        [HttpPost("registrarConPassword")]
+        public async Task<IActionResult> RegistrarConPassword(CrearUsuarioDTO credencialesUsuario)
+        {
+            var user = await _userManager.FindByEmailAsync(credencialesUsuario.Email);
+
+            if (user != null) return BadRequest("El usuario ya se encuentra registrado");
+
+            var identityUser = new IdentityUser
+            {
+                UserName = credencialesUsuario.Email,
+                Email = credencialesUsuario.Email,
+            };
+
+            var result = await _userManager.CreateAsync(identityUser, credencialesUsuario.Password);
+
+            if (result.Succeeded)
+            {
+                user = await _userManager.FindByEmailAsync(credencialesUsuario.Email);
+
+                _context.Usuario.Add(new Usuario
+                {
+                    UsuarioId = user.Id,
+                    Apellido = credencialesUsuario.Apellido,
+                    Nombre = credencialesUsuario.Nombre,
+                    Tutorial = false,
+                    ResetPassword = true,
+                    Email = credencialesUsuario.Email,
+                });
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
+        [HttpPost("excel")]
+        [RequestFormLimits(ValueCountLimit = int.MaxValue, MultipartBodyLengthLimit = long.MaxValue)]
+        [DisableRequestSizeLimit]
+        public async Task<ActionResult<dynamic>> CargarUsuariosEXCEL(IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                var detalles = new List<Detalleinventario>();
+
+                using (var package = new ExcelPackage(file.OpenReadStream()))
+                {
+                    var worksheet = package.Workbook.Worksheets[0]; // Selecciona la primera hoja del archivo Excel (índice 0).
+
+                    int rowCount = worksheet.Dimension.Rows;
+                    int colCount = worksheet.Dimension.Columns;
+
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        if ((worksheet.Cells[row, 4].Value.ToString() ?? "").Equals("")) continue;
+
+                        var user = await _userManager.FindByEmailAsync(worksheet.Cells[row, 4].Value.ToString());
+
+                        if (user != null) continue;
+
+                        var identityUser = new IdentityUser
+                        {
+                            UserName = worksheet.Cells[row, 4].Value.ToString(),
+                            Email = worksheet.Cells[row, 4].Value.ToString(),
+                        };
+
+                        var result = await _userManager.CreateAsync(identityUser, worksheet.Cells[row, 3].Value.ToString());
+
+                        if (result.Succeeded)
+                        {
+                            user = await _userManager.FindByEmailAsync(worksheet.Cells[row, 4].Value.ToString());
+
+                            _context.Usuario.Add(new Usuario
+                            {
+                                UsuarioId = user.Id,
+                                Apellido = worksheet.Cells[row, 1].Value.ToString() ?? "",
+                                Nombre = worksheet.Cells[row, 2].Value.ToString() ?? "",
+                                Tutorial = false,
+                                ResetPassword = true,
+                                Email = worksheet.Cells[row, 4].Value.ToString(),
+                            });
+
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+
+                if (detalles.Count > 0)
+                {
+                    var detallesBorrar = await _context.Detalleinventario.ToListAsync();
+                    if (detallesBorrar.Count > 0)
+                    {
+                        _context.Detalleinventario.RemoveRange(detallesBorrar);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                _context.Detalleinventario.AddRange(detalles);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+
+            return BadRequest("No se proporcionó un archivo Excel válido.");
         }
 
         [AllowAnonymous]
@@ -251,7 +364,7 @@ namespace SumincogarBackend.Controllers
             var llave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
             var creds = new SigningCredentials(llave, SecurityAlgorithms.HmacSha256);
 
-            var expiracion = DateTime.UtcNow.AddHours(12);
+            var expiracion = DateTime.UtcNow.AddHours(24);
 
             var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
                 expires: expiracion, signingCredentials: creds);
