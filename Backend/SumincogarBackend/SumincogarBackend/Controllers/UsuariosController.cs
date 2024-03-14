@@ -157,32 +157,32 @@ namespace SumincogarBackend.Controllers
 
                     for (int row = 2; row <= rowCount; row++)
                     {
-                        if ((worksheet.Cells[row, 4].Value.ToString() ?? "").Equals("")) continue;
+                        if ((worksheet.Cells[row, 5].Value.ToString() ?? "").Equals("")) continue;
 
-                        var user = await _userManager.FindByEmailAsync(worksheet.Cells[row, 4].Value.ToString());
+                        var user = await _userManager.FindByEmailAsync(worksheet.Cells[row, 5].Value.ToString());
 
                         if (user != null) continue;
 
                         var identityUser = new IdentityUser
                         {
-                            UserName = worksheet.Cells[row, 4].Value.ToString(),
-                            Email = worksheet.Cells[row, 4].Value.ToString(),
+                            UserName = worksheet.Cells[row, 5].Value.ToString(),
+                            Email = worksheet.Cells[row, 5].Value.ToString(),
                         };
 
-                        var result = await _userManager.CreateAsync(identityUser, worksheet.Cells[row, 3].Value.ToString());
+                        var result = await _userManager.CreateAsync(identityUser, worksheet.Cells[row,4].Value.ToString());
 
                         if (result.Succeeded)
                         {
-                            user = await _userManager.FindByEmailAsync(worksheet.Cells[row, 4].Value.ToString());
+                            user = await _userManager.FindByEmailAsync(worksheet.Cells[row, 5].Value.ToString());
 
                             _context.Usuario.Add(new Usuario
                             {
                                 UsuarioId = user.Id,
-                                Apellido = worksheet.Cells[row, 1].Value.ToString() ?? "",
-                                Nombre = worksheet.Cells[row, 2].Value.ToString() ?? "",
+                                Apellido = worksheet.Cells[row, 2].Value.ToString() ?? "",
+                                Nombre = worksheet.Cells[row, 3].Value.ToString() ?? "",
                                 Tutorial = false,
                                 ResetPassword = true,
-                                Email = worksheet.Cells[row, 4].Value.ToString(),
+                                Email = worksheet.Cells[row, 5].Value.ToString(),
                             });
 
                             await _context.SaveChangesAsync();
